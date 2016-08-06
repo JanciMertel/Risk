@@ -2,7 +2,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: [
-        './src/bundle.js'
+        './src/init.js'
     ],
     output: {
         path: __dirname,
@@ -15,14 +15,16 @@ module.exports = {
     },
     module: {
         loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: ['babel'],
-                query: {
-                    presets: ['es2015']
-                }
+          {
+            test: /\.jsx?$/,
+
+            exclude: /(node_modules|bower_components)/,
+            loader: 'babel',
+            query: {
+              babelrc: false,
+              presets: ['react']
             }
+          }
         ]
     }
 };
