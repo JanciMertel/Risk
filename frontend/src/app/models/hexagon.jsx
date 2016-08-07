@@ -1,28 +1,25 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 
-var Rect = require('react-konva').Rect
+var Konva = require('react-konva')
+var RegularPolygon = require('react-konva').RegularPolygon
 
 class Hexagon extends React.Component {
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      color: 'green'
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    console.log('clicked')
+  constructor(props) {
+    super(props);
   }
 
   render () {
+    var that = this
     return (
-      <Rect
-        x={10} y={10} width={50} height={50}
-        fill={this.state.color}
-        shadowBlur={10}
-        onClick={this.handleClick}
+      <RegularPolygon
+        x={this.props.x}
+        y={this.props.y}
+        width={this.props.w}
+        height={this.props.h}
+        sides={6}
+        fill={this.props.color}
+        onClick={this.props.handleClick.bind(that.props.id)}
       />
     )
   }
