@@ -1,28 +1,14 @@
 {
-  "name": "react-konva",
-  "description": "React binding to canvas element via Konva framework",
-  "version": "1.0.4",
+  "name": "html-risk",
+  "description": "",
+  "version": "0.0.1",
   "keywords": [
-    "react",
+    "risk",
     "canvas",
-    "jsx",
+    "game",
     "konva"
   ],
-  "bugs": "https://github.com/lavrton/react-konva/issues",
-  "licenses": "BSD-3-Clause",
-  "main": "./src/react-konva.js",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:lavrton/react-konva.git"
-  },
-  "dependencies": {
-    "fbjs": "^0.8.3",
-    "object-assign": "^4.1.0"
-  },
-  "peerDependencies": {
-    "react": "^15.1.0",
-    "konva": "^1.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
@@ -31,29 +17,21 @@
     "babel-register": "^6.9.0",
     "chai": "^3.5.0",
     "enzyme": "^2.3.0",
+    "fbjs": "^0.8.3",
     "jsdom": "^9.4.0",
     "konva": "^1.0.1",
     "mocha": "^3.0.0",
     "mocha-phantomjs": "^4.1.0",
+    "object-assign": "^4.1.0",
     "react": "^15.2.0",
     "react-addons-test-utils": "^15.2.0",
     "react-dom": "^15.2.0",
+    "react-konva": "^1.0.4",
     "sinon": "^2.0.0-pre",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "test:compile": "webpack --config webpack.test.config.js --progress --profile --colors",
-    "test:run": "mocha-phantomjs test/index.html",
-    "test:clean": "rm ./test/tests.bundle.js",
-    "test:watch": "webpack-dev-server --config webpack.test.config.js --progress --profile --colors",
-    "test": "npm run test:compile && npm run test:run && npm run test:clean",
-    "build": "webpack --progress --profile --colors"
-  },
-  "typings": "react-konva.d.ts",
-  "files": [
-    "README.md",
-    "src/react-konva.js",
-    "react-konva.d.ts"
-  ]
+    "build": "webpack --progress --profile --colors --watch"
+  }
 }
