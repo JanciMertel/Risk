@@ -55,7 +55,6 @@ var ReactKonva =
 	var React = __webpack_require__(2);
 	var ReactDOM = __webpack_require__(36);
 	var App = __webpack_require__(176);
-	console.log(document.getElementById('container'));
 
 	ReactDOM.render(React.createElement(App, null), document.getElementById('container'));
 
@@ -21444,17 +21443,20 @@ var ReactKonva =
 	var React = __webpack_require__(2);
 	var ReactDOM = __webpack_require__(36);
 
-	App = React.createClass({
-	  displayName: 'App',
+	class App extends React.Component {
+	  constructor(props) {
+	    super(props);
+	    // Operations usually carried out in componentWillMount go here
+	  }
 
-	  render: function () {
+	  render() {
 	    return React.createElement(
 	      'div',
 	      null,
 	      'Hello World'
 	    );
 	  }
-	});
+	}
 
 	module.exports = App;
 
