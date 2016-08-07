@@ -1,12 +1,10 @@
 var webpack = require('webpack');
 
 module.exports = {
-    entry: [
-        './src/init.js'
-    ],
+    entry: './frontend/src/init.js',
     output: {
         path: __dirname,
-        filename: './dist/bundle.js',
+        filename: 'dist/bundle.js',
     },
     module: {
         loaders: [

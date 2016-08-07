@@ -26,7 +26,7 @@ class MapGrid extends React.Component {
                 var hexagonClick = that.hexagonClicked.bind(this,index)
 
                 var size = 50
-                var y = 100 + r*size
+                var y = 100 + r*size*0.9
                 var x = 100 + c*size
                 if (r%2){
                   x += size/2

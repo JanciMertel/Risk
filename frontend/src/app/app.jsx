@@ -1,6 +1,7 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var _ = require('lodash')
+var Base = require('./base.js')
 
 var Stage = require('react-konva').Stage
 
@@ -10,12 +11,22 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      map: {
-        gridH: 10,
-        gridW: 10
-      },
+      mapName: 'map1',
+      map: false,
       screen: 'game'
     }
+
+    this.loadMap()
+  }
+
+  loadMap () {
+    var mapPath = 'maps/' + this.state.mapName + '.JSON'
+
+    Base.loadJSON(
+      mapPath,
+      function(data) {console.log(data)},
+      function(xhr) {console.log(xhr)}
+    )
   }
 
   render () {
