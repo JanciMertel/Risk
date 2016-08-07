@@ -1,0 +1,13 @@
+var Mongoose = require('mongoose');
+var database = require('../lib/database')
+
+var SessionSchema = new Mongoose.Schema({
+    username : { type : String },
+    image : { type : Mongoose.Schema.ObjectId, ref : 'images' }
+});
+
+SessionSchema.methods.greet = function() {
+    return 'Hello, ' + this.name;
+};
+
+var Session = database.connection.model('users', SessionSchema);
