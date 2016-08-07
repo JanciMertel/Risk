@@ -2,6 +2,7 @@ var React = require('react')
 var ReactDOM = require('react-dom')
 var _ = require('lodash')
 var Base = require('./base.js')
+var MapHelper = require('./helpers/map.js')
 
 var Stage = require('react-konva').Stage
 
@@ -20,11 +21,19 @@ class App extends React.Component {
   }
 
   loadMap () {
+    var that = this
     var mapPath = 'maps/' + this.state.mapName + '.JSON'
 
     Base.loadJSON(
       mapPath,
-      function(data) {console.log(data)},
+      function(data) {
+        that.setState(
+          {
+            map: data,
+            hexes: MapHelper.getHexes(data)
+          }
+        )
+      },
       function(xhr) {console.log(xhr)}
     )
   }

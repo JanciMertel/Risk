@@ -19,10 +19,12 @@ class MapGrid extends React.Component {
     return (
       <Group>
         {
-          Array(that.props.map.gridH).fill().map(function(row, r){
+          Array(that.props.map.height).fill().map(function(row, r){
             return(
-              Array(that.props.map.gridW).fill().map(function(column, c){
+              Array(that.props.map.width).fill().map(function(column, c){
                 var index = r + '-' + c
+                var hex = _.find(that.props.hexes, {index: index})
+
                 var hexagonClick = that.hexagonClicked.bind(this,index)
 
                 var size = 50
@@ -40,7 +42,7 @@ class MapGrid extends React.Component {
                     y={y}
                     h={size}
                     w={size}
-                    color={'red'}
+                    hex={hex}
                     handleClick={hexagonClick}
                   />
                 )

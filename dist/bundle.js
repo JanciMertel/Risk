@@ -21436,10 +21436,11 @@
 	var ReactDOM = __webpack_require__(35);
 	var _ = __webpack_require__(176);
 	var Base = __webpack_require__(178);
+	var MapHelper = __webpack_require__(179);
 
-	var Stage = __webpack_require__(179).Stage;
+	var Stage = __webpack_require__(180).Stage;
 
-	var screens = __webpack_require__(183);
+	var screens = __webpack_require__(184);
 
 	class App extends React.Component {
 	  constructor(props) {
@@ -21454,10 +21455,14 @@
 	  }
 
 	  loadMap() {
+	    var that = this;
 	    var mapPath = 'maps/' + this.state.mapName + '.JSON';
 
 	    Base.loadJSON(mapPath, function (data) {
-	      console.log(data);
+	      that.setState({
+	        map: data,
+	        hexes: MapHelper.getHexes(data)
+	      });
 	    }, function (xhr) {
 	      console.log(xhr);
 	    });
@@ -38136,10 +38141,60 @@
 /* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var _ = __webpack_require__(176);
+
+	var MapHelper = {
+
+	  defaultHexStyle() {
+	    return {
+	      color: 'grey'
+	    };
+	  },
+
+	  getHexes(map) {
+	    var hexes = [];
+
+	    Array(map.height).fill().map(function (row, r) {
+	      Array(map.width).fill().map(function (column, c) {
+	        var index = r + '-' + c;
+	        var hex = {
+	          x: c,
+	          y: r,
+	          index: index,
+	          region: false,
+	          continent: false
+	        };
+
+	        map.continents.map(function (continent, c) {
+	          continent.regions.map(function (region, r) {
+	            region.hexes.map(function (hexIndex, h) {
+	              if (index == hexIndex) {
+	                hex.region = region;
+	                hex.continent = continent;
+	              }
+	            });
+	          });
+	        });
+
+	        hexes.push(hex);
+	      });
+	    });
+
+	    return hexes;
+	  }
+
+	};
+
+	module.exports = MapHelper;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// Adapted from ReactART:
 	// https://github.com/reactjs/react-art
 
-	var Konva = __webpack_require__(180);
+	var Konva = __webpack_require__(181);
 	var React = __webpack_require__(2);
 
 	var ReactInstanceMap = __webpack_require__(124);
@@ -38531,7 +38586,7 @@
 
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -38787,8 +38842,8 @@
 	            // Node. Does not work with strict CommonJS, but
 	            // only CommonJS-like enviroments that support module.exports,
 	            // like Node.
-	            var Canvas = __webpack_require__(181);
-	            var jsdom = __webpack_require__(182).jsdom;
+	            var Canvas = __webpack_require__(182);
+	            var jsdom = __webpack_require__(183).jsdom;
 
 	            Konva.window = jsdom('<!DOCTYPE html><html><head></head><body></body></html>').defaultView;
 	            Konva.document = Konva.window.document;
@@ -54818,12 +54873,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 181 */
-/***/ function(module, exports) {
-
-	/* (ignored) */
-
-/***/ },
 /* 182 */
 /***/ function(module, exports) {
 
@@ -54831,9 +54880,15 @@
 
 /***/ },
 /* 183 */
+/***/ function(module, exports) {
+
+	/* (ignored) */
+
+/***/ },
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var GameScreen = __webpack_require__(184);
+	var GameScreen = __webpack_require__(185);
 
 	var screens = {
 	  'game': GameScreen
@@ -54842,14 +54897,14 @@
 	module.exports = screens;
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(35);
 
-	var Layer = __webpack_require__(179).Layer;
-	var MapGrid = __webpack_require__(185);
+	var Layer = __webpack_require__(180).Layer;
+	var MapGrid = __webpack_require__(186);
 
 	class GameScreen extends React.Component {
 	  constructor(props) {
@@ -54870,14 +54925,14 @@
 	module.exports = GameScreen;
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(35);
 
-	var Group = __webpack_require__(179).Group;
-	var Hexagon = __webpack_require__(186);
+	var Group = __webpack_require__(180).Group;
+	var Hexagon = __webpack_require__(187);
 
 	class MapGrid extends React.Component {
 	  constructor(props) {
@@ -54894,9 +54949,11 @@
 	    return React.createElement(
 	      Group,
 	      null,
-	      Array(that.props.map.gridH).fill().map(function (row, r) {
-	        return Array(that.props.map.gridW).fill().map(function (column, c) {
+	      Array(that.props.map.height).fill().map(function (row, r) {
+	        return Array(that.props.map.width).fill().map(function (column, c) {
 	          var index = r + '-' + c;
+	          var hex = _.find(that.props.hexes, { index: index });
+
 	          var hexagonClick = that.hexagonClicked.bind(this, index);
 
 	          var size = 50;
@@ -54913,7 +54970,7 @@
 	            y: y,
 	            h: size,
 	            w: size,
-	            color: 'red',
+	            hex: hex,
 	            handleClick: hexagonClick
 	          });
 	        });
@@ -54925,35 +54982,64 @@
 	module.exports = MapGrid;
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(35);
 
-	var Konva = __webpack_require__(179);
-	var RegularPolygon = __webpack_require__(179).RegularPolygon;
+	var MapHelper = __webpack_require__(179);
+	var Konva = __webpack_require__(180);
+	var RegularPolygon = __webpack_require__(180).RegularPolygon;
+
+	var colors = __webpack_require__(188);
 
 	class Hexagon extends React.Component {
 	  constructor(props) {
 	    super(props);
 	  }
 
+	  style() {
+	    var hexStyle = MapHelper.defaultHexStyle();
+	    if (this.props.hex) {
+	      if (this.props.hex.continent) {
+	        hexStyle = {
+	          color: colors[this.props.hex.continent.properties['style'].color][this.props.hex.region.properties.regionColor]
+	        };
+	      }
+	    }
+
+	    return hexStyle;
+	  }
+
 	  render() {
+	    var style = this.style();
 	    var that = this;
+
 	    return React.createElement(RegularPolygon, {
 	      x: this.props.x,
 	      y: this.props.y,
 	      width: this.props.w,
 	      height: this.props.h,
 	      sides: 6,
-	      fill: this.props.color,
+	      fill: style.color,
 	      onClick: this.props.handleClick.bind(that.props.id)
 	    });
 	  }
 	}
 
 	module.exports = Hexagon;
+
+/***/ },
+/* 188 */
+/***/ function(module, exports) {
+
+	
+	var screens = {
+	  'green': ['#edf8fb', '#b2e2e2', '#66c2a4', '#2ca25f', '#006d2c']
+	};
+
+	module.exports = screens;
 
 /***/ }
 /******/ ]);

@@ -18,7 +18,6 @@ var Base = {
       xhr.send();
   }
 
-
 }
 
 module.exports = Base
