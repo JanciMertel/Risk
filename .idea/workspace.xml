@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f589ecb4-965c-47f5-ab31-89db234cae24" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/.babelrcs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/dist/bundle.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/app/enums/screens.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/app/models/hexagon.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/app/models/mapgrid.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/app/screens/game.jsx" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/frontend/dist/react-konva.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/frontend/src/bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/frontend/src/react-konva.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/package.json" afterPath="$PROJECT_DIR$/frontend/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/src/app/app.jsx" afterPath="$PROJECT_DIR$/frontend/src/app/app.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/src/index.html" afterPath="$PROJECT_DIR$/frontend/src/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/src/init.js" afterPath="$PROJECT_DIR$/frontend/src/init.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/webpack.config.js" afterPath="$PROJECT_DIR$/frontend/webpack.config.js" />
     </list>
     <ignored path="risk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,8 +37,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/frontend/src/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="23" selection-end-column="17" />
+            <state relative-caret-position="323">
+              <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -111,6 +98,9 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="PhpServers">
+    <servers />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
@@ -239,6 +229,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="f589ecb4-965c-47f5-ab31-89db234cae24" name="Default" comment="" />
@@ -246,12 +239,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1470563377792</updated>
-      <workItem from="1470563378915" duration="6785000" />
+      <workItem from="1470563378915" duration="6813000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6785000" />
+    <option name="totallyTimeSpent" value="6813000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -275,6 +268,14 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -327,8 +328,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/src/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="23" selection-end-column="17" />
+        <state relative-caret-position="323">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
           <folding />
         </state>
       </provider>
