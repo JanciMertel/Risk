@@ -4,7 +4,9 @@ var MapHelper = {
 
   defaultHexStyle () {
     return {
-      color: 'grey'
+      color: 'grey',
+      width: 0,
+      fill: 'grey'
     }
   },
 
@@ -24,13 +26,10 @@ var MapHelper = {
         }
 
         map.continents.map(function(continent, c){
-          continent.regions.map(function(region, r){
-            region.hexes.map(function(hexIndex, h){
-              if (index == hexIndex){
-                hex.region = region
-                hex.continent = continent
-              }
-            })
+          continent.hexes.map(function(hexIndex, h){
+            if (index == hexIndex){
+              hex.continent = continent
+            }
           })
         })
 

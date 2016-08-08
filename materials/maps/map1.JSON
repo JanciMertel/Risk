@@ -6,33 +6,43 @@
   "continents" : [
     {
       "name" : "Continent1",
+      "id": 0,
       "properties" : {
-        "bonus": 10,
-        "color": "red"
+        "bonus": 10
       },
-      "regions" : [
-       {
-          "name" : "Country1",
-          "properties" : {
-
-          },
-          "hexes" : ["5-5", "5-6", "6-5"]
-        },
-        {
-           "name" : "Country2",
-           "properties" : {
-
-           },
-           "hexes" : ["1-2", "1-3", "1-4", "2-1", "2-2"]
-         },
-         {
-            "name" : "Country3",
-            "properties" : {
-
-            },
-            "hexes" : ["7-4", "7-6", "8-5"]
-          }
-      ]
+      "hexes": ["1-1", "1-2", "1-3", "1-4", "1-5", "1-6", "2-2", "2-3"]
+    },
+    {
+      "name" : "Continent2",
+      "id": 1,
+      "properties" : {
+        "bonus": 10
+      },
+      "hexes": ["2-4", "2-5", "2-6", "3-1", "3-2", "3-3"]
+    },
+    {
+      "name" : "Continent3",
+      "id": 2,
+      "properties" : {
+        "bonus": 10
+      },
+      "hexes": ["4-2", "4-3", "4-4", "5-2", "5-3"]
+    },
+    {
+      "name" : "Continent4",
+      "id": 3,
+      "properties" : {
+        "bonus": 10
+      },
+      "hexes": ["3-5", "3-6", "4-6", "5-5", "5-6", "4-7", "5-7"]
+    },
+    {
+      "name" : "Continent5",
+      "id": 4,
+      "properties" : {
+        "bonus": 10
+      },
+      "hexes": ["2-7", "3-6", "3-7"]
     }
   ]
 }

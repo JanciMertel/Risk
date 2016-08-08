@@ -16,8 +16,11 @@ class Hexagon extends React.Component {
     var hexStyle = MapHelper.defaultHexStyle()
     if (this.props.hex){
       if (this.props.hex.continent){
+
         hexStyle = {
-          color: colors[this.props.hex.continent.properties['style'].color][this.props.hex.region.properties.regionColor]
+          color: colors.continents[this.props.hex.continent.id],
+          fill: 'white',
+          width: 6
         }
       }
     }
@@ -36,7 +39,9 @@ class Hexagon extends React.Component {
         width={this.props.w}
         height={this.props.h}
         sides={6}
-        fill={style.color}
+        strokeWidth={style.width}
+        stroke={style.color}
+        fill={style.fill}
         onClick={this.props.handleClick.bind(that.props.id)}
       />
     )

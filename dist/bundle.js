@@ -38147,7 +38147,9 @@
 
 	  defaultHexStyle() {
 	    return {
-	      color: 'grey'
+	      color: 'grey',
+	      width: 0,
+	      fill: 'grey'
 	    };
 	  },
 
@@ -38166,13 +38168,10 @@
 	        };
 
 	        map.continents.map(function (continent, c) {
-	          continent.regions.map(function (region, r) {
-	            region.hexes.map(function (hexIndex, h) {
-	              if (index == hexIndex) {
-	                hex.region = region;
-	                hex.continent = continent;
-	              }
-	            });
+	          continent.hexes.map(function (hexIndex, h) {
+	            if (index == hexIndex) {
+	              hex.continent = continent;
+	            }
 	          });
 	        });
 
@@ -54932,7 +54931,8 @@
 	var ReactDOM = __webpack_require__(35);
 
 	var Group = __webpack_require__(180).Group;
-	var Hexagon = __webpack_require__(187);
+	var Hex = __webpack_require__(187);
+	var EmptyHex = __webpack_require__(191);
 
 	class MapGrid extends React.Component {
 	  constructor(props) {
@@ -54956,23 +54956,39 @@
 
 	          var hexagonClick = that.hexagonClicked.bind(this, index);
 
-	          var size = 50;
-	          var y = 100 + r * size * 0.9;
+	          var size = 55;
+	          var sizeM = size - 7;
+	          var y = 100 + r * sizeM;
 	          var x = 100 + c * size;
 	          if (r % 2) {
-	            x += size / 2;
+	            x += sizeM / 2 + 4;
 	          }
 
-	          return React.createElement(Hexagon, {
-	            key: index,
-	            id: index,
-	            x: x,
-	            y: y,
-	            h: size,
-	            w: size,
-	            hex: hex,
-	            handleClick: hexagonClick
-	          });
+	          if (hex) {
+	            if (hex.continent) {
+	              return React.createElement(Hex, {
+	                key: index,
+	                id: index,
+	                x: x,
+	                y: y,
+	                h: size,
+	                w: size,
+	                hex: hex,
+	                handleClick: hexagonClick
+	              });
+	            } else {
+	              return React.createElement(EmptyHex, {
+	                key: index,
+	                id: index,
+	                x: x,
+	                y: y,
+	                h: size,
+	                w: size,
+	                hex: hex,
+	                handleClick: hexagonClick
+	              });
+	            }
+	          }
 	        });
 	      })
 	    );
@@ -54990,9 +55006,39 @@
 
 	var MapHelper = __webpack_require__(179);
 	var Konva = __webpack_require__(180);
+	var Hexagon = __webpack_require__(188);
+	var Counter = __webpack_require__(190);
+	var Group = __webpack_require__(180).Group;
+
+	class Hex extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    return React.createElement(
+	      Group,
+	      null,
+	      React.createElement(Hexagon, this.props),
+	      React.createElement(Counter, this.props)
+	    );
+	  }
+	}
+
+	module.exports = Hex;
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var MapHelper = __webpack_require__(179);
+	var Konva = __webpack_require__(180);
 	var RegularPolygon = __webpack_require__(180).RegularPolygon;
 
-	var colors = __webpack_require__(188);
+	var colors = __webpack_require__(189);
 
 	class Hexagon extends React.Component {
 	  constructor(props) {
@@ -55003,8 +55049,11 @@
 	    var hexStyle = MapHelper.defaultHexStyle();
 	    if (this.props.hex) {
 	      if (this.props.hex.continent) {
+
 	        hexStyle = {
-	          color: colors[this.props.hex.continent.properties['style'].color][this.props.hex.region.properties.regionColor]
+	          color: colors.continents[this.props.hex.continent.id],
+	          fill: 'white',
+	          width: 6
 	        };
 	      }
 	    }
@@ -55022,7 +55071,9 @@
 	      width: this.props.w,
 	      height: this.props.h,
 	      sides: 6,
-	      fill: style.color,
+	      strokeWidth: style.width,
+	      stroke: style.color,
+	      fill: style.fill,
 	      onClick: this.props.handleClick.bind(that.props.id)
 	    });
 	  }
@@ -55031,15 +55082,94 @@
 	module.exports = Hexagon;
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports) {
 
-	
-	var screens = {
-	  'green': ['#edf8fb', '#b2e2e2', '#66c2a4', '#2ca25f', '#006d2c']
+	var colors = {
+	  'continents': ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928']
 	};
 
-	module.exports = screens;
+	module.exports = colors;
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var MapHelper = __webpack_require__(179);
+	var Circle = __webpack_require__(180).Circle;
+	var Group = __webpack_require__(180).Group;
+	var Text = __webpack_require__(180).Text;
+
+	class Counter extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    return React.createElement(
+	      Group,
+	      null,
+	      React.createElement(Circle, {
+	        x: this.props.x,
+	        y: this.props.y,
+	        radius: this.props.w / 4,
+	        fill: 'white',
+	        stroke: 'black',
+	        strokeWidth: 4
+	      }),
+	      React.createElement(Text, {
+	        x: this.props.x - 15,
+	        y: this.props.y - this.props.w / 10,
+	        text: parseInt(Math.random() * 20),
+	        fontFamily: 'Arial black',
+	        width: 30,
+	        fontSize: 10,
+	        align: 'center'
+	      })
+	    );
+	  }
+	}
+
+	module.exports = Counter;
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var MapHelper = __webpack_require__(179);
+	var Konva = __webpack_require__(180);
+	var Hexagon = __webpack_require__(188);
+	var Group = __webpack_require__(180).Group;
+
+	var RegularPolygon = __webpack_require__(180).RegularPolygon;
+
+	class Hex extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    var style = MapHelper.defaultHexStyle();
+	    return React.createElement(RegularPolygon, {
+	      x: this.props.x,
+	      y: this.props.y,
+	      width: this.props.w,
+	      height: this.props.h,
+	      sides: 6,
+	      strokeWidth: style.width,
+	      stroke: style.color,
+	      fill: style.fill
+	    });
+	  }
+	}
+
+	module.exports = Hex;
 
 /***/ }
 /******/ ]);
