@@ -21438,8 +21438,6 @@
 	var Base = __webpack_require__(178);
 	var MapHelper = __webpack_require__(179);
 
-	var Stage = __webpack_require__(180).Stage;
-
 	var screens = __webpack_require__(184);
 
 	class App extends React.Component {
@@ -21448,10 +21446,32 @@
 	    this.state = {
 	      mapName: 'map1',
 	      map: false,
-	      screen: 'game'
+	      screen: 'login',
+	      display: {
+	        w: window.innerWidth,
+	        h: window.innerHeight
+	      }
 	    };
 
 	    this.loadMap();
+	  }
+
+	  changeScreen(newScreen) {
+	    this.setState({ screen: newScreen });
+	  }
+
+	  componentDidMount() {
+	    window.addEventListener('resize', this.handleResize.bind(this));
+	  }
+
+	  handleResize(e) {
+
+	    this.setState({
+	      display: {
+	        w: window.innerWidth,
+	        h: window.innerHeight
+	      }
+	    });
 	  }
 
 	  loadMap() {
@@ -21470,11 +21490,13 @@
 
 	  render() {
 	    var that = this;
-	    var screen = React.createElement(screens[this.state.screen], that.state);
+	    var propsObject = this.state;
+	    propsObject.app = this;
+	    var screen = React.createElement(screens[this.state.screen], propsObject);
 
 	    return React.createElement(
-	      Stage,
-	      { width: 700, height: 700 },
+	      'div',
+	      { id: 'canvas-wrapper' },
 	      screen
 	    );
 	  }
@@ -54888,9 +54910,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var GameScreen = __webpack_require__(185);
+	var LobbyScreen = __webpack_require__(192);
+	var LoginScreen = __webpack_require__(193);
 
 	var screens = {
-	  'game': GameScreen
+	  'game': GameScreen,
+	  'lobby': LobbyScreen,
+	  'login': LoginScreen
 	};
 
 	module.exports = screens;
@@ -54902,6 +54928,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(35);
 
+	var Stage = __webpack_require__(180).Stage;
 	var Layer = __webpack_require__(180).Layer;
 	var MapGrid = __webpack_require__(186);
 
@@ -54914,9 +54941,16 @@
 	    var that = this;
 
 	    return React.createElement(
-	      Layer,
-	      null,
-	      React.createElement(MapGrid, this.props)
+	      Stage,
+	      {
+	        width: this.props.display.w,
+	        height: this.props.display.h
+	      },
+	      React.createElement(
+	        Layer,
+	        null,
+	        React.createElement(MapGrid, this.props)
+	      )
 	    );
 	  }
 	}
@@ -55016,9 +55050,10 @@
 	  }
 
 	  render() {
+	    var that = this;
 	    return React.createElement(
 	      Group,
-	      null,
+	      { onClick: this.props.handleClick.bind(that.props.id) },
 	      React.createElement(Hexagon, this.props),
 	      React.createElement(Counter, this.props)
 	    );
@@ -55073,8 +55108,7 @@
 	      sides: 6,
 	      strokeWidth: style.width,
 	      stroke: style.color,
-	      fill: style.fill,
-	      onClick: this.props.handleClick.bind(that.props.id)
+	      fill: style.fill
 	    });
 	  }
 	}
@@ -55086,7 +55120,7 @@
 /***/ function(module, exports) {
 
 	var colors = {
-	  'continents': ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928']
+	  'continents': ['#8dd3c7', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#d9d9d9', '#bc80bd', '#ccebc5', '#ffed6f']
 	};
 
 	module.exports = colors;
@@ -55170,6 +55204,210 @@
 	}
 
 	module.exports = Hex;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var Layer = __webpack_require__(180).Layer;
+
+	class LobbyScreen extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      'this is lobby'
+	    );
+	  }
+	}
+
+	module.exports = LobbyScreen;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var Layer = __webpack_require__(180).Layer;
+	var Button = __webpack_require__(194);
+
+	class LoginScreen extends React.Component {
+	  constructor(props) {
+	    super(props);
+
+	    this.state = {
+	      login: '',
+	      pass: '',
+
+	      registerMail: '',
+	      registerLogin: '',
+	      registerPass: '',
+	      loginState: '',
+	      registerState: ''
+	    };
+	  }
+
+	  handleChangeValue(parameter, e) {
+	    var newState = {};
+	    newState[parameter] = e.target.value;
+	    this.setState(newState);
+	  }
+
+	  doLogin() {
+	    // parameters validation
+	    console.log('login');
+	    this.props.app.changeScreen('lobby');
+	  }
+
+	  doRegister() {
+	    // email validation
+	    // loginname uniquity
+	    // password control
+	    // register on server
+	    console.log('register');
+	  }
+
+	  render() {
+	    var that = this;
+
+	    var buttonW = 100;
+	    var buttonH = 30;
+
+	    return React.createElement(
+	      'div',
+	      { id: 'login-wrapper' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'RISK GAME LOGIN PAGE'
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
+	        'please LOGIN '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Login ',
+	        React.createElement('input', { type: 'text', name: 'login', value: this.state.login, onChange: this.handleChangeValue.bind(this, 'login') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Pass: ',
+	        React.createElement('input', { type: 'password', name: 'pass', value: this.state.pass, onChange: this.handleChangeValue.bind(this, 'pass') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.doLogin.bind(this) },
+	        'LOGIN'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.loginState
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
+	        '...or REGISTER '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Email ',
+	        React.createElement('input', { type: 'text', name: 'register-mail', value: this.state.registerMail, onChange: this.handleChangeValue.bind(this, 'registerMail') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Login: ',
+	        React.createElement('input', { type: 'email', name: 'register-login', value: this.state.registerLogin, onChange: this.handleChangeValue.bind(this, 'registerLogin') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Pass: ',
+	        React.createElement('input', { type: 'password', name: 'register-pass', value: this.state.registerPass, onChange: this.handleChangeValue.bind(this, 'registerPass') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.doRegister.bind(this) },
+	        'REGISTER'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.registerState
+	      )
+	    );
+	  }
+	}
+
+	module.exports = LoginScreen;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var Group = __webpack_require__(180).Group;
+	var Rect = __webpack_require__(180).Rect;
+	var Text = __webpack_require__(180).Text;
+
+	class Button extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      Group,
+	      {
+	        onClick: this.props.handleClick },
+	      React.createElement(Rect, {
+	        x: this.props.x,
+	        y: this.props.y,
+	        height: this.props.h,
+	        width: this.props.w,
+	        fill: this.props.fill,
+	        stroke: 0
+	      }),
+	      React.createElement(Text, {
+	        x: this.props.x,
+	        y: this.props.y + this.props.h / 4,
+	        width: this.props.w,
+	        text: this.props.text,
+	        fontSize: 15,
+	        align: 'center',
+	        fill: this.props.textColor
+	      })
+	    );
+	  }
+	}
+
+	module.exports = Button;
 
 /***/ }
 /******/ ]);

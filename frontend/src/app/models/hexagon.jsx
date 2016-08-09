@@ -42,7 +42,6 @@ class Hexagon extends React.Component {
         strokeWidth={style.width}
         stroke={style.color}
         fill={style.fill}
-        onClick={this.props.handleClick.bind(that.props.id)}
       />
     )
   }

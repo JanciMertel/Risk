@@ -13,8 +13,9 @@ class Hex extends React.Component {
   }
 
   render () {
+    var that = this
     return (
-      <Group>
+      <Group onClick={this.props.handleClick.bind(that.props.id)}>
         <Hexagon {...this.props} />
         <Counter {...this.props} />
       </Group>
