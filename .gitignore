@@ -1,6 +1,6 @@
 node_modules
 npm-debug.log
-dist
-.git
 backend/node_modules/
-.idea
+dist/
+.git/
+.idea/

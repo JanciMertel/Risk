@@ -3,6 +3,7 @@ var _ = require('lodash')
 var Connection = {
 
   socket = null;
+
   connect() {
     if(!socket)
     {
@@ -10,6 +11,7 @@ var Connection = {
       this.socket.on('connect', this.onConnect.bind(this))
     }
   }
+  
   onConnect() {
     console.log('Connected to server.')
   }
@@ -41,7 +43,7 @@ var Connection = {
   }
 
   onMatchStep() {
-    
+
   }
 
   onMatchActionInfo() {
