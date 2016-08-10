@@ -6,5 +6,8 @@ database.connect();
 require('./core/models/Lobby')
 require('./core/models/User')
 
+//controllers
+require('./core/controllers/LobbyController')
+
 var server = require('./core/lib/Server')
 server.start(3000);

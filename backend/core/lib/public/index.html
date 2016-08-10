@@ -28,7 +28,14 @@
                       var connection = new Connection();
                       connection.connect();
                       connection.bindEvents();
-                      connection.emit('test', 'jea')
+                      connection.emit('Lobby::findAllMatches', null, function()
+                      {
+                        console.log('Lobby::findAllMatches response', arguments)
+                      })
+                    //  connection.emit('Lobby::createMatch', null, function()
+                    //  {
+                  //      console.log('Lobby::createMatch response', arguments)
+                  //    })
                     }
                   };
                   request.open('POST', '/login', true);

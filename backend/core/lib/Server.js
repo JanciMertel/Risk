@@ -18,11 +18,11 @@ passport.use(new Strategy({
   },
   function(req, username, password, done) {
     Mongoose.model('User').findOne({ username: username}, function (err, user) {
+      req.message = 'ERROR'; // default message
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
       if (!user.validPassword(password))
       {
-        req.message = 'WRONG_PASS';
         return done(null, false);
       }
       req.message = 'OK';
@@ -80,9 +80,9 @@ function Server()
     this.io.on('connection', function(socket){
       console.log('connection')
         socket.socket = new Socket(socket);
-        socket.on('test', function(data)
+        socket.on('test', function(data, cb)
         {
-            console.log('TEST', data)
+            cb('woot');
         })
     });
     this.httpServer.listen(port);

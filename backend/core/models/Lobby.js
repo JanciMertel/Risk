@@ -5,7 +5,9 @@ var server = require('../lib/Server')
 var ObjectId = Mongoose.Schema.Types.ObjectId;
 
 var LobbySchema = new Mongoose.Schema({
-    id : { type : ObjectId }  // room id in io terminology
+    id : { type : ObjectId },  // room id in io terminology
+    started : { type: Boolean },
+    players : { type : Array }
 });
 
 LobbySchema.methods.getSockets = function() {
