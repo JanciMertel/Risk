@@ -8,3 +8,5 @@ Socket.prototype.onDisonnect = function()
 {
     console.log('Socket disconnected');
 }
+
+module.exports = Socket;

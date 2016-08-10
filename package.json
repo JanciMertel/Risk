@@ -8,7 +8,15 @@
     "game",
     "konva"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "connect-sqlite3": "^0.9.8",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.8",
+    "morgan": "^1.7.0",
+    "passport.socketio": "^3.6.2",
+    "socket.io": "^1.4.8"
+  },
   "devDependencies": {
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
@@ -38,7 +46,6 @@
     "move-to-dist": "parallelshell \"npm run move-maps\" \"npm run move-html\" ",
     "move-maps": "copyfiles -f materials/maps/**/* dist/maps",
     "move-html": "copyfiles -f frontend/src/index.html dist",
-
     "build": "parallelshell \"npm run move-to-dist\" \"npm run webpack\" \"npm run client-server\"  "
   }
 }
