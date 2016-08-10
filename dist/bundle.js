@@ -21438,8 +21438,6 @@
 	var Base = __webpack_require__(178);
 	var MapHelper = __webpack_require__(179);
 
-	var Stage = __webpack_require__(180).Stage;
-
 	var screens = __webpack_require__(184);
 
 	class App extends React.Component {
@@ -21448,10 +21446,33 @@
 	    this.state = {
 	      mapName: 'map1',
 	      map: false,
-	      screen: 'game'
+	      screen: 'lobby',
+
+	      display: {
+	        w: window.innerWidth,
+	        h: window.innerHeight
+	      }
 	    };
 
 	    this.loadMap();
+	  }
+
+	  changeScreen(newScreen) {
+	    this.setState({ screen: newScreen });
+	  }
+
+	  componentDidMount() {
+	    window.addEventListener('resize', this.handleResize.bind(this));
+	  }
+
+	  handleResize(e) {
+
+	    this.setState({
+	      display: {
+	        w: window.innerWidth,
+	        h: window.innerHeight
+	      }
+	    });
 	  }
 
 	  loadMap() {
@@ -21470,11 +21491,13 @@
 
 	  render() {
 	    var that = this;
-	    var screen = React.createElement(screens[this.state.screen], that.state);
+	    var propsObject = this.state;
+	    propsObject.app = this;
+	    var screen = React.createElement(screens[this.state.screen], propsObject);
 
 	    return React.createElement(
-	      Stage,
-	      { width: 700, height: 700 },
+	      'div',
+	      { id: 'canvas-wrapper' },
 	      screen
 	    );
 	  }
@@ -54888,9 +54911,13 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var GameScreen = __webpack_require__(185);
+	var LobbyScreen = __webpack_require__(192);
+	var LoginScreen = __webpack_require__(193);
 
 	var screens = {
-	  'game': GameScreen
+	  'game': GameScreen,
+	  'lobby': LobbyScreen,
+	  'login': LoginScreen
 	};
 
 	module.exports = screens;
@@ -54902,6 +54929,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(35);
 
+	var Stage = __webpack_require__(180).Stage;
 	var Layer = __webpack_require__(180).Layer;
 	var MapGrid = __webpack_require__(186);
 
@@ -54914,9 +54942,16 @@
 	    var that = this;
 
 	    return React.createElement(
-	      Layer,
-	      null,
-	      React.createElement(MapGrid, this.props)
+	      Stage,
+	      {
+	        width: this.props.display.w,
+	        height: this.props.display.h
+	      },
+	      React.createElement(
+	        Layer,
+	        null,
+	        React.createElement(MapGrid, this.props)
+	      )
 	    );
 	  }
 	}
@@ -55016,9 +55051,10 @@
 	  }
 
 	  render() {
+	    var that = this;
 	    return React.createElement(
 	      Group,
-	      null,
+	      { onClick: this.props.handleClick.bind(that.props.id) },
 	      React.createElement(Hexagon, this.props),
 	      React.createElement(Counter, this.props)
 	    );
@@ -55073,8 +55109,7 @@
 	      sides: 6,
 	      strokeWidth: style.width,
 	      stroke: style.color,
-	      fill: style.fill,
-	      onClick: this.props.handleClick.bind(that.props.id)
+	      fill: style.fill
 	    });
 	  }
 	}
@@ -55086,7 +55121,7 @@
 /***/ function(module, exports) {
 
 	var colors = {
-	  'continents': ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928']
+	  'continents': ['#8dd3c7', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#d9d9d9', '#bc80bd', '#ccebc5', '#ffed6f']
 	};
 
 	module.exports = colors;
@@ -55170,6 +55205,622 @@
 	}
 
 	module.exports = Hex;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var LobbyGamesWrapper = __webpack_require__(197);
+	var LobbyProfile = __webpack_require__(196);
+
+	class LobbyScreen extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      'div',
+	      { id: 'lobby-wrapper', style: this.wrapperStyle() },
+	      React.createElement(
+	        'div',
+	        { style: this.styleGameWrapper() },
+	        React.createElement(LobbyGamesWrapper, null)
+	      ),
+	      React.createElement(
+	        'div',
+	        { style: this.styleProfileWrapper() },
+	        React.createElement(LobbyProfile, null)
+	      )
+	    );
+	  }
+
+	  wrapperStyle() {
+	    return {
+	      width: this.props.display.w,
+	      height: this.props.display.h
+	    };
+	  }
+
+	  styleGameWrapper() {
+	    return {
+	      width: this.props.display.w,
+	      height: '80%'
+	    };
+	  }
+
+	  styleProfileWrapper() {
+	    return {
+	      width: this.props.display.w,
+	      height: '20%'
+	    };
+	  }
+	}
+
+	module.exports = LobbyScreen;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var Layer = __webpack_require__(180).Layer;
+	var Button = __webpack_require__(194);
+
+	class LoginScreen extends React.Component {
+	  constructor(props) {
+	    super(props);
+
+	    this.state = {
+	      login: '',
+	      pass: '',
+
+	      registerMail: '',
+	      registerLogin: '',
+	      registerPass: '',
+	      loginState: '',
+	      registerState: ''
+	    };
+	  }
+
+	  handleChangeValue(parameter, e) {
+	    var newState = {};
+	    newState[parameter] = e.target.value;
+	    this.setState(newState);
+	  }
+
+	  doLogin() {
+	    // parameters validation
+	    console.log('login');
+	    this.props.app.changeScreen('lobby');
+	  }
+
+	  doRegister() {
+	    // email validation
+	    // loginname uniquity
+	    // password control
+	    // register on server
+	    console.log('register');
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      'div',
+	      { id: 'login-wrapper', style: this.wrapperStyle() },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'RISK GAME LOGIN PAGE'
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
+	        'please LOGIN '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Login ',
+	        React.createElement('input', { type: 'text', name: 'login', value: this.state.login, onChange: this.handleChangeValue.bind(this, 'login') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Pass: ',
+	        React.createElement('input', { type: 'password', name: 'pass', value: this.state.pass, onChange: this.handleChangeValue.bind(this, 'pass') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.doLogin.bind(this) },
+	        'LOGIN'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.loginState
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
+	        '...or REGISTER '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Email ',
+	        React.createElement('input', { type: 'text', name: 'register-mail', value: this.state.registerMail, onChange: this.handleChangeValue.bind(this, 'registerMail') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Login: ',
+	        React.createElement('input', { type: 'email', name: 'register-login', value: this.state.registerLogin, onChange: this.handleChangeValue.bind(this, 'registerLogin') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Pass: ',
+	        React.createElement('input', { type: 'password', name: 'register-pass', value: this.state.registerPass, onChange: this.handleChangeValue.bind(this, 'registerPass') }),
+	        ' '
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.doRegister.bind(this) },
+	        'REGISTER'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.registerState
+	      )
+	    );
+	  }
+
+	  wrapperStyle() {
+	    return {
+	      width: this.props.display.w,
+	      height: this.props.display.h
+	    };
+	  }
+	}
+
+	module.exports = LoginScreen;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var Group = __webpack_require__(180).Group;
+	var Rect = __webpack_require__(180).Rect;
+	var Text = __webpack_require__(180).Text;
+
+	class Button extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      Group,
+	      {
+	        onClick: this.props.handleClick },
+	      React.createElement(Rect, {
+	        x: this.props.x,
+	        y: this.props.y,
+	        height: this.props.h,
+	        width: this.props.w,
+	        fill: this.props.fill,
+	        stroke: 0
+	      }),
+	      React.createElement(Text, {
+	        x: this.props.x,
+	        y: this.props.y + this.props.h / 4,
+	        width: this.props.w,
+	        text: this.props.text,
+	        fontSize: 15,
+	        align: 'center',
+	        fill: this.props.textColor
+	      })
+	    );
+	  }
+	}
+
+	module.exports = Button;
+
+/***/ },
+/* 195 */,
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	class LobbyProfile extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        'PROFILE'
+	      ),
+	      React.createElement(
+	        'h4',
+	        null,
+	        'PLAYER'
+	      )
+	    );
+	  }
+
+	}
+
+	module.exports = LobbyProfile;
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+	var _ = __webpack_require__(176);
+
+	var LobbyGamesTable = __webpack_require__(198);
+	var LobbyGamePreview = __webpack_require__(199);
+	var LobbyGameBuilder = __webpack_require__(200);
+
+	class LobbyGamesWrapper extends React.Component {
+	  constructor(props) {
+	    super(props);
+	    this.wrapperBorder = '2px solid black';
+
+	    this.state = {
+	      lameGameList: [{ 'id': 1, 'map': 'map1', 'name': 'ahoj', 'playersNow': 1, 'playersAll': 7, selected: true }, { 'id': 2, 'map': 'map1', 'name': 'bla', 'playersNow': 3, 'playersAll': 7, selected: false }, { 'id': 3, 'map': 'map1', 'name': 'blabla', 'playersNow': 2, 'playersAll': 7, selected: false }, { 'id': 4, 'map': 'map1', 'name': 'only PRO', 'playersNow': 5, 'playersAll': 7, selected: false }, { 'id': 5, 'map': 'map1', 'name': 'only NOOBS', 'playersNow': 6, 'playersAll': 7, selected: false }]
+	    };
+	  }
+
+	  gameClicked(id, e) {
+
+	    this.state.lameGameList.map(function (game, g) {
+	      game.selected = false;
+	    });
+
+	    this.findGameById(id).selected = true;
+	    this.setState(this.state);
+	  }
+
+	  findGameById(id) {
+	    return _.find(this.state.lameGameList, { id: id });
+	  }
+
+	  getSelectedGame() {
+	    return _.find(this.state.lameGameList, { selected: true });
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      'div',
+	      { style: this.styleWrapper() },
+	      React.createElement(
+	        'div',
+	        { style: this.styleTableWrapper() },
+	        React.createElement(LobbyGamesTable, { gamesList: that.state.lameGameList, gameClicked: that.gameClicked.bind(this) })
+	      ),
+	      React.createElement(
+	        'div',
+	        { style: this.stylePreviewWrapper() },
+	        React.createElement(LobbyGamePreview, { selectedGame: that.getSelectedGame() })
+	      ),
+	      React.createElement(
+	        'div',
+	        { style: this.styleBuilderWrapper() },
+	        React.createElement(LobbyGameBuilder, null)
+	      )
+	    );
+	  }
+
+	  styleWrapper() {
+	    return {
+	      width: '100%',
+	      height: '100%'
+	    };
+	  }
+
+	  styleTableWrapper() {
+	    return {
+	      position: 'absolute',
+	      top: '1%',
+	      width: '66%',
+	      height: '47%',
+	      border: this.wrapperBorder
+	    };
+	  }
+
+	  stylePreviewWrapper() {
+	    return {
+	      position: 'absolute',
+	      top: '50%',
+	      width: '66%',
+	      height: '29%',
+	      border: this.wrapperBorder
+	    };
+	  }
+
+	  styleBuilderWrapper() {
+	    return {
+	      position: 'absolute',
+	      right: '1%',
+	      top: '1%',
+	      width: '30%',
+	      height: '78%',
+	      border: this.wrapperBorder
+	    };
+	  }
+	}
+
+	module.exports = LobbyGamesWrapper;
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	var LobbyGameTableItem = __webpack_require__(201);
+
+	class LobbyGamesTable extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  handleGameClicked(gameIndex) {
+	    this.props.gameClicked(gameIndex);
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      'table',
+	      { style: this.styleTable() },
+	      React.createElement(
+	        'thead',
+	        null,
+	        React.createElement(
+	          'tr',
+	          null,
+	          React.createElement(
+	            'th',
+	            null,
+	            'id'
+	          ),
+	          React.createElement(
+	            'th',
+	            null,
+	            'name'
+	          ),
+	          React.createElement(
+	            'th',
+	            null,
+	            'players'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'tbody',
+	        null,
+	        this.props.gamesList.map(function (game, g) {
+	          var gameClicked = that.handleGameClicked.bind(that, game.id);
+	          return React.createElement(LobbyGameTableItem, { key: g, game: game, gameClicked: gameClicked });
+	        })
+	      )
+	    );
+	  }
+
+	  styleTable() {
+	    return {
+	      width: '100%',
+	      padding: '10px'
+	    };
+	  }
+	}
+
+	module.exports = LobbyGamesTable;
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	class LobbyGamePreview extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  handleJoinClick() {
+	    console.log(this);
+	  }
+
+	  render() {
+	    var that = this;
+	    var game = this.props.selectedGame;
+
+	    return React.createElement(
+	      'div',
+	      { style: this.stylePreview() },
+	      React.createElement(
+	        'h2',
+	        null,
+	        'GAME PREVIEW  ' + game.id
+	      ),
+	      React.createElement(
+	        'dl',
+	        null,
+	        React.createElement(
+	          'dt',
+	          null,
+	          'map'
+	        ),
+	        React.createElement(
+	          'dd',
+	          null,
+	          game.map
+	        ),
+	        React.createElement(
+	          'dt',
+	          null,
+	          'name'
+	        ),
+	        React.createElement(
+	          'dd',
+	          null,
+	          game.name
+	        ),
+	        React.createElement(
+	          'dt',
+	          null,
+	          'players'
+	        ),
+	        React.createElement(
+	          'dd',
+	          null,
+	          game.playersNow
+	        )
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleJoinClick.bind(this) },
+	        'JOIN'
+	      )
+	    );
+	  }
+
+	  stylePreview() {
+	    return {
+	      padding: '15px'
+	    };
+	  }
+	}
+
+	module.exports = LobbyGamePreview;
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	class LobbyGameBuilder extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    var that = this;
+
+	    return React.createElement(
+	      'div',
+	      { style: this.styleBuilder() },
+	      React.createElement(
+	        'h4',
+	        null,
+	        ' here comes the game creator'
+	      )
+	    );
+	  }
+
+	  styleBuilder() {
+	    return {
+	      padding: '15px'
+	    };
+	  }
+	}
+
+	module.exports = LobbyGameBuilder;
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(35);
+
+	class LobbyGameTableItem extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    var that = this;
+	    var game = this.props.game;
+
+	    return React.createElement(
+	      'tr',
+	      { onClick: this.props.gameClicked.bind(this, game.id), style: this.styleTr() },
+	      React.createElement(
+	        'td',
+	        { style: this.styleTd() },
+	        game.id
+	      ),
+	      React.createElement(
+	        'td',
+	        { style: this.styleTd() },
+	        game.name
+	      ),
+	      React.createElement(
+	        'td',
+	        { style: this.styleTd() },
+	        game.playersNow + '/' + game.playersAll
+	      )
+	    );
+	  }
+
+	  styleTr() {
+	    var color = 'white';
+	    if (this.props.game.selected) {
+	      color = 'lightblue';
+	    }
+	    return {
+	      backgroundColor: color
+	    };
+	  }
+
+	  styleTd() {
+	    return {
+	      textAlign: 'center'
+	    };
+	  }
+	}
+
+	module.exports = LobbyGameTableItem;
 
 /***/ }
 /******/ ]);

@@ -26,7 +26,7 @@ class MapGrid extends React.Component {
                 var index = r + '-' + c
                 var hex = _.find(that.props.hexes, {index: index})
 
-                var hexagonClick = that.hexagonClicked.bind(this,index)
+                var hexagonClick = that.hexagonClicked.bind(this, index)
 
                 var size = 55
                 var sizeM = size - 7
