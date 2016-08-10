@@ -43,12 +43,8 @@ class LoginScreen extends React.Component {
   render () {
     var that = this
 
-    var buttonW = 100
-    var buttonH = 30
-
-
     return (
-      <div id="login-wrapper">
+      <div id="login-wrapper" style={this.wrapperStyle()}>
         <h1>RISK GAME LOGIN PAGE</h1>
         <h2>please LOGIN </h2>
         <p>Login <input type="text" name="login" value={this.state.login} onChange={this.handleChangeValue.bind(this, 'login')} /> </p>
@@ -64,6 +60,14 @@ class LoginScreen extends React.Component {
         <p>{this.state.registerState}</p>
       </div>
     )
+  }
+
+  wrapperStyle () {
+    return {
+      width: this.props.display.w,
+      height: this.props.display.h
+    }
+
   }
 }
 

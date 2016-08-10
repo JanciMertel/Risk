@@ -12,7 +12,8 @@ class App extends React.Component {
     this.state = {
       mapName: 'map1',
       map: false,
-      screen: 'login',
+      screen: 'lobby',
+
       display: {
         w: window.innerWidth,
         h: window.innerHeight
