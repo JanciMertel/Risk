@@ -5,7 +5,7 @@ var MapHelper = require('../helpers/map.js')
 var Konva = require('react-konva')
 var RegularPolygon = require('react-konva').RegularPolygon
 
-var colors = require('../enums/colors.js')
+var Colors = require('../enums/colors.js')
 
 class Hexagon extends React.Component {
   constructor (props) {
@@ -18,7 +18,7 @@ class Hexagon extends React.Component {
       if (this.props.hex.continent){
 
         hexStyle = {
-          color: colors.continents[this.props.hex.continent.id],
+          color: Colors.continents[this.props.hex.continent.id],
           fill: 'white',
           width: 6
         }

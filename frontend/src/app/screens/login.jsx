@@ -4,6 +4,10 @@ var ReactDOM = require('react-dom')
 var Layer = require('react-konva').Layer
 var Button = require('../models/button.jsx')
 
+var connection = require('../helpers/connection.js')
+
+var Actions = require('../enums/actions.js')
+
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -27,9 +31,30 @@ class LoginScreen extends React.Component {
   }
 
   doLogin () {
+    var that = this
     // parameters validation
     console.log('login')
-    this.props.app.changeScreen('lobby')
+    var loginData = {
+      username: this.state.login,
+      password: this.state.pass,
+    }
+
+    //doHttpRequest
+    connection.doHttpRequest(
+      '/login',
+      loginData,
+      function() {
+        that.changeLoginState('login success')
+      },
+      function() {
+        that.changeLoginState('login error')
+      })
+
+    //this.props.app.changeScreen('lobby')
+  }
+
+  changeLoginState (newLoginState) {
+    this.setState({loginState: newLoginState})
   }
 
   doRegister () {
@@ -41,6 +66,7 @@ class LoginScreen extends React.Component {
   }
 
   render () {
+    console.log(connection)
     var that = this
 
     return (

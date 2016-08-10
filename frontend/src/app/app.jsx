@@ -4,7 +4,7 @@ var _ = require('lodash')
 var Base = require('./base.js')
 var MapHelper = require('./helpers/map.js')
 
-var screens = require('./enums/screens.js')
+var Screens = require('./enums/screens.js')
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class App extends React.Component {
     this.state = {
       mapName: 'map1',
       map: false,
-      screen: 'lobby',
+      screen: 'login',
 
       display: {
         w: window.innerWidth,
@@ -65,7 +65,7 @@ class App extends React.Component {
     var that = this
     var propsObject = this.state
     propsObject.app = this
-    var screen = React.createElement(screens[this.state.screen], propsObject);
+    var screen = React.createElement(Screens[this.state.screen], propsObject);
 
     return (
       <div id="canvas-wrapper">

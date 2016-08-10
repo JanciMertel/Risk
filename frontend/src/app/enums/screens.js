@@ -3,10 +3,10 @@ var LobbyScreen = require('../screens/lobby.jsx')
 var LoginScreen = require('../screens/login.jsx')
 
 
-var screens = {
+var Screens = {
   'game': GameScreen,
   'lobby': LobbyScreen,
   'login': LoginScreen
 }
 
-module.exports = screens
+module.exports = Screens

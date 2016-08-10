@@ -1,63 +1,86 @@
+var io = require('socket.io-client')
 
-function Connection() {
+class Connection {
+  constructor () {
+    this.socket = null
 
-  this.socket = null;
-  this.connect = function() {
+    this.connect()
+    this.bindEvents()
+  }
+
+  connect () {
     if(!this.socket)
     {
-      this.socket = io(window.server);
+      this.socket = io(window.server)
       this.socket.on('connect', this.onConnect.bind(this))
     }
   }
-  this.onConnect = function(){
-    console.log('Connected to server.')
+
+  doHttpRequest (url, data, success, error) {
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function() {
+      if (request.readyState === 4) {
+        if (request.status === 200) {
+          success(JSON.parse(request.responseText));
+        } else {
+          error(request.responseText);
+        }
+      }
+    }
+
+    request.open('POST', url, true)
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+    request.send(data)
   }
 
-  this.on = function(){
-    this.socket.on.apply(this.socket, arguments);
+  onConnect () {
+    console.log('Connected to server')
   }
 
-  this.emit = function(){
-    this.socket.emit.apply(this.socket, arguments);
+  on () {
+    this.socket.on.apply(this.socket, arguments)
+  }
+
+  emit () {
+    this.socket.emit.apply(this.socket, arguments)
   }
 
   // use stuff in here somewhere else
-  this.bindEvents = function(){
-    this.socket.on('Lobby::startGame', this.onLobbyStartGame)
+  bindEvents () {
+    this.socket.on('Lobby::startMatch', this.onLobbyStartMatch)
     this.socket.on('Match::info', this.onMatchInfo)
     this.socket.on('Match::step', this.onMatchStep)
     this.socket.on('Match::actionInfo', this.onMatchActionInfo)
-    this.socket.on('Match::endTurn', this.onMatchEndTurn)
-    this.socket.on('Match::endMatch', this.onMatchEndMatch)
+    this.socket.on('Match::endTurn', this.onGameEndTurn)
+    this.socket.on('Match::endMatch', this.onGameEndMatch)
   }
 
-  this.onLobbyStartGame = function(){
-
-  }
-
-  this.onMatchInfo = function(){
+  onLobbyStartMatch () {
 
   }
 
-  this.onMatchStep = function(){
+  onMatchInfo () {
 
   }
 
-  this.onMatchActionInfo = function(){
+  onMatchStep () {
 
   }
 
-  this.onMatchEndTurn = function(){
+  onMatchActionInfo () {
 
   }
 
-  this.onMatchEndMatch = function(){
+  onMatchEndTurn () {
+
+  }
+
+  onMatchEndMatch () {
 
   }
 }
 
-var connection = new Connection();
-connection.connect();
-connection.bindEvents();
+const connection = new Connection()
 
 module.exports = connection
