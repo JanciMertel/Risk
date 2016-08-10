@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Backend tester</title>
+        <meta name="description" content="html5 konva experiment">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico in the root directory -->
+        <script type="text/javascript">
+            window.server = 'http://localhost:3000';
+        </script>
+        <script type="text/javascript">
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = server + '/socket.io/socket.io.js';
+                var s = document.getElementsByTagName('script')[0];
+                po.addEventListener('load', function (e) {
+
+                  var request = new XMLHttpRequest();
+                  request.withCredentials = true;
+                  request.onreadystatechange = function() {
+                    console.log('1')
+                    if (request.readyState == 4 && request.status == 200) {
+                      console.log('2')
+                      document.getElementById("container").innerHTML = request.responseText;
+                      var connection = new Connection();
+                      connection.connect();
+                      connection.bindEvents();
+                    }
+                  };
+                  request.open('POST', '/login', true);
+                  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                  request.send('username=2323&password=sds');
+                })
+                s.parentNode.insertBefore(po, s);
+            })();
+        </script>
+    </head>
+    <body>
+      <div id="container"></div>
+    </body>
+    <script src="scripts.js"></script>
+</html>

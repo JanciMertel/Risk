@@ -1,15 +1,9 @@
 // get models
-var database = require('./core/lib/database')
+var database = require('./core/lib/Database')
 database.connect();
 
 //models
-require('./core/models/Session')
+require('./core/models/Lobby')
 
-// sockets
-var Socket = require('./core/lib/Socket');
-var server = require('http').createServer();
-var io = require('socket.io')(server);
-io.on('connection', function(socket){
-    socket.socket = new Socket(socket);
-});
-server.listen(3000);
+var server = require('./core/lib/Server')
+server.start(3000);

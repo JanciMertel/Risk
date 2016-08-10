@@ -1,5 +1,7 @@
 
-function Connection() {
+console.log('wa1t')
+function Connection()
+{
 
   this.socket = null;
   this.connect = function() {
@@ -9,20 +11,20 @@ function Connection() {
       this.socket.on('connect', this.onConnect.bind(this))
     }
   }
-  this.onConnect = function(){
+  this.onConnect = function() {
     console.log('Connected to server.')
   }
 
-  this.on = function(){
+  this.on = function() {
     this.socket.on.apply(this.socket, arguments);
   }
 
-  this.emit = function(){
+  this.emit = function() {
     this.socket.emit.apply(this.socket, arguments);
   }
 
   // use stuff in here somewhere else
-  this.bindEvents = function(){
+  this.bindEvents = function() {
     this.socket.on('Lobby::startGame', this.onLobbyStartGame)
     this.socket.on('Match::info', this.onMatchInfo)
     this.socket.on('Match::step', this.onMatchStep)
@@ -31,33 +33,27 @@ function Connection() {
     this.socket.on('Match::endMatch', this.onMatchEndMatch)
   }
 
-  this.onLobbyStartGame = function(){
+  this.onLobbyStartGame = function() {
 
   }
 
-  this.onMatchInfo = function(){
+  this.onMatchInfo = function() {
 
   }
 
-  this.onMatchStep = function(){
+  this.onMatchStep = function() {
 
   }
 
-  this.onMatchActionInfo = function(){
+  this.onMatchActionInfo = function() {
 
   }
 
-  this.onMatchEndTurn = function(){
+  this.onMatchEndTurn = function() {
 
   }
 
-  this.onMatchEndMatch = function(){
+  this.onMatchEndMatch = function() {
 
   }
 }
-
-var connection = new Connection();
-connection.connect();
-connection.bindEvents();
-
-module.exports = connection
