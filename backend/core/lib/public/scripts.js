@@ -1,5 +1,4 @@
 
-console.log('wa1t')
 function Connection()
 {
 

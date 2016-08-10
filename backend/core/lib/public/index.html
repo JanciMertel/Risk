@@ -28,11 +28,12 @@
                       var connection = new Connection();
                       connection.connect();
                       connection.bindEvents();
+                      connection.emit('test', 'jea')
                     }
                   };
                   request.open('POST', '/login', true);
                   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                  request.send('username=2323&password=sds');
+                  request.send('username=tester&password=123456');
                 })
                 s.parentNode.insertBefore(po, s);
             })();

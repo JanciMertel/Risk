@@ -1,0 +1,2 @@
+Database connected
+Your error message for the client { EIO: '3', transport: 'polling', t: 'LPrt96z' }
