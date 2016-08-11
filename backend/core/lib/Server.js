@@ -48,6 +48,12 @@ function Server()
     port = port || 3000
     var app = express();
 
+    app.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
+
     app.use(require('cookie-parser')());
     app.use(require('body-parser').urlencoded({ extended: true }));
     app.use(session({store: sessionStore, key: 'connect.sid', secret: 'secret', resave: false, saveUninitialized: false }));
