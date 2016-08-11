@@ -6,6 +6,7 @@ var Button = require('../models/button.jsx')
 
 var connection = require('../helpers/connection.js')
 
+var Screens = require('../enums/screens.js')
 var Actions = require('../enums/actions.js')
 
 class LoginScreen extends React.Component {
@@ -46,6 +47,7 @@ class LoginScreen extends React.Component {
       loginData,
       function() {
         that.changeLoginState('login success')
+        that.props.app.changeScreen('lobby')
       },
       function() {
         that.changeLoginState('login error')

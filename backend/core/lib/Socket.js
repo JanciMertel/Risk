@@ -4,9 +4,10 @@ function Socket(socket)
 {
     this.socket = socket;
     this.socket.on('disconnect', this.onDisonnect.bind(this));
-
     this.socket.on('Lobby::findAllMatches', this.onFindAllMatches.bind(this))
     this.socket.on('Lobby::createMatch', this.onCreateMatch.bind(this))
+    console.log('socket')
+    
 
 }
 
@@ -28,6 +29,7 @@ Socket.prototype.getCurrentUser = function()
  */
 Socket.prototype.onFindAllMatches = function(data, callback)
 {
+    console.log('onFindAllMatches')
     var that = this;
     var promise = lobbyController.findAvailableLobbies();
     promise.then(function(lobbies)

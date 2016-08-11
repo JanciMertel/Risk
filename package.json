@@ -57,6 +57,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
+    "server": "nodemon ./backend/server.js",
     "webpack": "webpack --progress --profile --colors --watch",
     "client-server": "http-server dist",
     "move-to-dist": "parallelshell \"npm run move-maps\" \"npm run move-html\" ",
