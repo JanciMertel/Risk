@@ -4,7 +4,7 @@ module.exports = {
     entry: './frontend/src/init.js',
     output: {
         path: __dirname,
-        filename: 'dist/bundle.js',
+        filename: 'backend/core/lib/public/bundle.js',
     },
     module: {
         loaders: [

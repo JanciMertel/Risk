@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Backend tester</title>
+        <title>RISK</title>
         <meta name="description" content="html5 konva experiment">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -15,39 +15,12 @@
             (function() {
                 var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
                 po.src = server + '/socket.io/socket.io.js';
-                var s = document.getElementsByTagName('script')[0];
-                po.addEventListener('load', function (e) {
-
-                  var request = new XMLHttpRequest();
-                  request.withCredentials = true;
-                  request.onreadystatechange = function() {
-                    console.log('1')
-                    if (request.readyState == 4 && request.status == 200) {
-                      console.log('2')
-                      document.getElementById("container").innerHTML = request.responseText;
-                      var connection = new Connection();
-                      connection.connect();
-                      connection.bindEvents();
-                      connection.emit('Lobby::findAllMatches', null, function()
-                      {
-                        console.log('Lobby::findAllMatches response', arguments)
-                      })
-                    //  connection.emit('Lobby::createMatch', null, function()
-                    //  {
-                  //      console.log('Lobby::createMatch response', arguments)
-                  //    })
-                    }
-                  };
-                  request.open('POST', '/login', true);
-                  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                  request.send('username=tester&password=123456');
-                })
-                s.parentNode.insertBefore(po, s);
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
             })();
         </script>
     </head>
-    <body>
+    <body style="overflow: hidden">
       <div id="container"></div>
     </body>
-    <script src="scripts.js"></script>
+    <script src="bundle.js"></script>
 </html>
