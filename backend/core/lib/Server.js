@@ -84,7 +84,7 @@ function Server()
     );
 
     this.io.on('connection', function(socket){
-        console.log('connection')
+      console.log('connection')
         socket.socket = new Socket(socket);
         socket.on('test', function(data, cb)
         {

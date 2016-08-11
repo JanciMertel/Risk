@@ -1,2 +1,0 @@
-$2a$10$ETD2FiXAC4QzzE51BpLQqOZvrIPqs3Xabg7NsF6h02GwccZi2kAMW
-Database connected
