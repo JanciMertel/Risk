@@ -64,7 +64,7 @@ function Server()
 
     this.httpServer = http.Server(app);
     this.io = socketIo(this.httpServer);
-
+    this.io.origins('*:*');
     this.io.use(passportSocketIo.authorize({
       cookieParser: require('cookie-parser'),       // the same middleware you registrer in express
       key:          'connect.sid',       // the name of the cookie where express/connect stores its session_id
