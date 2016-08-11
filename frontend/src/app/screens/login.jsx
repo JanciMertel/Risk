@@ -39,9 +39,10 @@ class LoginScreen extends React.Component {
       password: this.state.pass,
     }
 
+    loginData = 'username=tester&password=123456'
     //doHttpRequest
     connection.doHttpRequest(
-      '/login',
+      'http://localhost:3000/login',
       loginData,
       function() {
         that.changeLoginState('login success')

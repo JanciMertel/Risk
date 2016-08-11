@@ -7,6 +7,9 @@ var LobbyProfile = require('../lobby/profile.jsx')
 class LobbyScreen extends React.Component {
   constructor(props) {
     super(props);
+    connection.emit(Actions['LOBBYFIND']({}, function(response){
+      console.log(response)
+    }))
   }
 
   render () {
