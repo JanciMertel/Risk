@@ -43,7 +43,7 @@ class LoginScreen extends React.Component {
     loginData = 'username=tester&password=123456'
     //doHttpRequest
     connection.doHttpRequest(
-      'http://localhost:3000/login',
+      'http://127.0.0.1:3000/login',
       loginData,
       function(data) {
         connection.connect();

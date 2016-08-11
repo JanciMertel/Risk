@@ -32,10 +32,10 @@ class Connection {
         }
       }
     }
-    request.withCredentials = true;
-
     request.open('POST', url, true)
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+    request.setRequestHeader('Accept', 'application/json');
+    request.withCredentials = true;
     request.send(data)
   }
 

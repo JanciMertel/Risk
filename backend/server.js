@@ -1,3 +1,12 @@
+var fs = require('fs');
+
+//cleanup
+try {
+    fs.accessSync('sessions.db', fs.F_OK);
+    fs.unlinkSync('sessions.db');
+} catch (e) {
+}
+
 // get models
 var database = require('./core/lib/Database')
 database.connect();
@@ -10,4 +19,5 @@ require('./core/models/User')
 require('./core/controllers/LobbyController')
 
 var server = require('./core/lib/Server')
+
 server.start(3000);

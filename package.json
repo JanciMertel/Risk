@@ -61,7 +61,7 @@
   "scripts": {
     "server": "nodemon ./backend/server.js",
     "webpack": "webpack --progress --profile --colors --watch",
-    "client-server": "http-server backend/core/lib/public",
+    "client-server": "http-server dist",
     "move-to-dist": "parallelshell \"npm run move-maps\" \"npm run move-html\" ",
     "move-maps": "copyfiles -f materials/maps/**/* dist/maps",
     "move-html": "copyfiles -f frontend/src/index.html dist",

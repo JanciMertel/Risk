@@ -5,10 +5,7 @@ function Socket(socket)
     this.socket = socket;
     this.socket.on('disconnect', this.onDisonnect.bind(this));
     this.socket.on('Lobby::findAllMatches', this.onFindAllMatches.bind(this))
-    this.socket.on('Lobby::createMatch', this.onCreateMatch.bind(this))
-    console.log('socket')
-    
-
+    this.socket.on('Lobby::createMatch', this.onCreateMatch.bind(this))  
 }
 
 Socket.prototype.onDisonnect = function()
