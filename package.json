@@ -15,6 +15,7 @@
     "mongoose": "^4.5.8",
     "morgan": "^1.7.0",
     "passport.socketio": "^3.6.2",
+    "react-foundation": "^0.6.8",
     "socket.io": "^1.4.8"
   },
   "devDependencies": {
@@ -40,7 +41,9 @@
     "mocha": "^3.0.0",
     "mocha-phantomjs": "^4.1.0",
     "mongoose": "^4.5.8",
+    "nodemon": "^1.10.0",
     "object-assign": "^4.1.0",
+    "onchange": "^2.5.0",
     "parallelshell": "^2.0.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
@@ -60,11 +63,12 @@
   },
   "scripts": {
     "server": "nodemon ./backend/server.js",
-    "webpack": "webpack --progress --profile --colors --watch",
-    "client-server": "http-server dist",
+    "onchange-html": "onchange frontend/src/index.html -- npm run move-to-dist",
     "move-to-dist": "parallelshell \"npm run move-maps\" \"npm run move-html\" ",
     "move-maps": "copyfiles -f materials/maps/**/* dist/maps",
     "move-html": "copyfiles -f frontend/src/index.html dist",
-    "build": "parallelshell \"npm run move-to-dist\" \"npm run webpack\" \"npm run client-server\"  "
+    "client-server": "http-server dist",
+    "webpack": "webpack --progress --profile --colors --watch",
+    "build": "parallelshell \"npm run move-to-dist\" \"npm run webpack\" \"npm run client-server\" \"npm run onchange-html\" "
   }
 }

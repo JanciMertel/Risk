@@ -3,6 +3,7 @@ var io = require('socket.io-client')
 class Connection {
   constructor () {
     this.socket = null
+    //this.connect()
   }
 
   connect () {

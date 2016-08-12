@@ -9,6 +9,8 @@ var connection = require('../helpers/connection.js')
 var Screens = require('../enums/screens.js')
 var Actions = require('../enums/actions.js')
 
+var F = require('react-foundation')
+
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -72,35 +74,48 @@ class LoginScreen extends React.Component {
   }
 
   render () {
-    console.log(connection)
     var that = this
 
-    return (
-      <div id="login-wrapper" style={this.wrapperStyle()}>
-        <h1>RISK GAME LOGIN PAGE</h1>
-        <h2>please LOGIN </h2>
-        <p>Login <input type="text" name="login" value={this.state.login} onChange={this.handleChangeValue.bind(this, 'login')} /> </p>
-        <p>Pass: <input type="password" name="pass" value={this.state.pass} onChange={this.handleChangeValue.bind(this, 'pass')} /> </p>
-        <button onClick={this.doLogin.bind(this)}>LOGIN</button>
-        <p>{this.state.loginState}</p>
+    console.log(F)
 
-        <h2>...or REGISTER </h2>
-        <p>Email <input type="text" name="register-mail" value={this.state.registerMail} onChange={this.handleChangeValue.bind(this, 'registerMail')} /> </p>
-        <p>Login: <input type="email" name="register-login" value={this.state.registerLogin} onChange={this.handleChangeValue.bind(this, 'registerLogin')} /> </p>
-        <p>Pass: <input type="password" name="register-pass" value={this.state.registerPass} onChange={this.handleChangeValue.bind(this, 'registerPass')} /> </p>
-        <button onClick={this.doRegister.bind(this)}>REGISTER</button>
-        <p>{this.state.registerState}</p>
+    return (
+      <div id="login-wrapper" className="row">
+        <div className="large-6">
+          <h1>RISK GAME LOGIN PAGE</h1>
+          <h2>please LOGIN </h2>
+
+          <p>Login
+            <input type="text" name="login" value={this.state.login} onChange={this.handleChangeValue.bind(this, 'login')} />
+          </p>
+
+          <p>Pass:
+            <input type="password" name="pass" value={this.state.pass} onChange={this.handleChangeValue.bind(this, 'pass')} />
+          </p>
+
+          <F.Button color={F.Colors.SUCCESS} onClick={this.doLogin.bind(this)}>LOGIN</F.Button>
+          <p>{this.state.loginState}</p>
+
+          <h2>...or REGISTER </h2>
+
+          <p>Email
+            <input type="text" name="register-mail" value={this.state.registerMail} onChange={this.handleChangeValue.bind(this, 'registerMail')} />
+          </p>
+
+          <p>Login:
+            <input type="email" name="register-login" value={this.state.registerLogin} onChange={this.handleChangeValue.bind(this, 'registerLogin')} />
+          </p>
+
+          <p>Pass:
+            <input type="password" name="register-pass" value={this.state.registerPass} onChange={this.handleChangeValue.bind(this, 'registerPass')} />
+          </p>
+
+          <F.Button color={F.Colors.ALERT} onClick={this.doRegister.bind(this)}>REGISTER</F.Button>
+          <p>{this.state.registerState}</p>
+        </div>
       </div>
     )
   }
 
-  wrapperStyle () {
-    return {
-      width: this.props.display.w,
-      height: this.props.display.h
-    }
-
-  }
 }
 
 module.exports = LoginScreen
