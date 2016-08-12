@@ -3,9 +3,6 @@ var io = require('socket.io-client')
 class Connection {
   constructor () {
     this.socket = null
-
-    this.connect()
-    this.bindEvents()
   }
 
   connect () {
@@ -21,16 +18,24 @@ class Connection {
 
     request.onreadystatechange = function() {
       if (request.readyState === 4) {
+        var response = JSON.parse(request.responseText);
         if (request.status === 200) {
-          success(JSON.parse(request.responseText));
+            if(response.message && response.message == 'OK')
+            {
+              success(response);
+            }
+            else {
+              error(response);
+            }
         } else {
-          error(request.responseText);
+          error(response);
         }
       }
     }
-
     request.open('POST', url, true)
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+    request.setRequestHeader('Accept', 'application/json');
+    request.withCredentials = true;
     request.send(data)
   }
 

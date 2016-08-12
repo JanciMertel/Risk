@@ -43,9 +43,12 @@ class LoginScreen extends React.Component {
     loginData = 'username=tester&password=123456'
     //doHttpRequest
     connection.doHttpRequest(
-      'http://localhost:3000/login',
+      'http://127.0.0.1:3000/login',
       loginData,
-      function() {
+      function(data) {
+        connection.connect();
+        connection.bindEvents();
+        // callback not required...connection.emit works even if not connected(from 1.0.0?)
         that.changeLoginState('login success')
         that.props.app.changeScreen('lobby')
       },

@@ -2,7 +2,7 @@ var Socket = require('./Socket');
 var express = require('express')
 var http = require('http')
 var socketIo = require('socket.io');
-
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passportSocketIo = require("passport.socketio");
 var passport = require('passport');
@@ -49,14 +49,26 @@ function Server()
     var app = express();
 
     app.use(function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Credentials", true);
+      res.header("Access-Control-Allow-Origin", "http://localhost:8080");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
 
-    app.use(require('cookie-parser')());
+    app.use(cookieParser());
     app.use(require('body-parser').urlencoded({ extended: true }));
-    app.use(session({store: sessionStore, key: 'connect.sid', secret: 'secret', resave: false, saveUninitialized: false }));
+    app.use(session({
+      store: sessionStore,
+      key: 'connect.sid',
+      secret: 'secret',
+      rolling: true,
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        maxAge: (365 * 24 * 60 * 60),
+        httpOnly:false
+      }
+    }));
     app.use(passport.initialize());
     app.use(passport.session());
     //testing purposes
@@ -64,9 +76,10 @@ function Server()
 
     this.httpServer = http.Server(app);
     this.io = socketIo(this.httpServer);
+
     this.io.origins('*:*');
     this.io.use(passportSocketIo.authorize({
-      cookieParser: require('cookie-parser'),       // the same middleware you registrer in express
+      cookieParser: cookieParser,       // the same middleware you registrer in express
       key:          'connect.sid',       // the name of the cookie where express/connect stores its session_id
       secret:       'secret',    // the session_secret to parse the cookie
       store:        sessionStore,        // we NEED to use a sessionstore. no memorystore please
@@ -84,12 +97,8 @@ function Server()
     );
 
     this.io.on('connection', function(socket){
-        console.log('connection')
+        console.log('New socket.io connection')
         socket.socket = new Socket(socket);
-        socket.on('test', function(data, cb)
-        {
-            cb('woot');
-        })
     });
     this.httpServer.listen(port);
   }
