@@ -21,21 +21,20 @@ class LobbyScreen extends React.Component {
 
 
   gameClicked (id, e) {
+    var selectedMatch = this.findGameById(id)
+    console.log(selectedMatch)
 
-    this.props.matches.lameGameList.map(function(game, g){
-      game.selected = false
+    this.setState({
+      selectedMatch: selectedMatch
     })
-
-    this.findGameById(id).selected = true
-    this.setState(this.state)
   }
 
   findGameById (id) {
-    return _.find(this.state.lameGameList, {id: id})
+    return _.find(this.props.matches, {_id: id})
   }
 
-  getSelectedGame () {
-    return _.find(this.state.lameGameList, {selected: true})
+  findMapById (id) {
+    return _.find(this.props.maps, {'_id': id})
   }
 
 
@@ -50,6 +49,7 @@ class LobbyScreen extends React.Component {
             <div className="medium-8 columns">
               <LobbyMatchesTable
                 matchesList={that.props.matches}
+                selectedMatch={this.state.selectedMatch}
                 maps={that.props.maps}
                 matchClicked={that.gameClicked.bind(this)}
               />
@@ -63,7 +63,8 @@ class LobbyScreen extends React.Component {
           <div className="row">
             <div className="medium-8 columns">
               <LobbyMatchPreview
-                selectedGame={that.getSelectedGame()}
+                map={that.findMapById(this.state.selectedMatch.map)}
+                selectedMatch={this.state.selectedMatch}
               />
             </div>
             <div className="medium-4 columns">

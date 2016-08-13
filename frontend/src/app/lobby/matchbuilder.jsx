@@ -8,7 +8,6 @@ var F = require('react-foundation')
 
 class LobbyMatchBuilder extends React.Component {
   constructor(props) {
-    console.log(props)
     super(props);
     this.state = {
       matchName: '',
@@ -20,15 +19,12 @@ class LobbyMatchBuilder extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props)
     this.setState({
       maps: nextProps.maps
     })
   }
 
-
   handleChangeValue (parameter, e) {
-    console.log(parameter)
     var newState = {}
     newState[parameter] = e.target.value
     this.setState(newState)
@@ -43,11 +39,8 @@ class LobbyMatchBuilder extends React.Component {
       botsAllowed: this.state.aiBots
     }
 
-    console.log(matchObject)
-
     connection.emit(Actions['LOBBYCREATE'], matchObject, function(response){
       console.log('game created')
-      console.log(response)
     })
 
   }

@@ -31,12 +31,20 @@ class LobbyMatchesTable extends React.Component {
             {
               this.props.matchesList.map(function(match, g){
                 var gameClicked = that.handleMatchClicked.bind(that, match._id)
+
                 var matchMapName = ''
                 if (that.props.maps.length) {
                   matchMapName = _.find(that.props.maps, {'_id': match.map}).name
                 }
+
                 return(
-                  <LobbyMatchTableItem map={matchMapName} key={g} match={match} gameClicked={gameClicked}/>
+                  <LobbyMatchTableItem
+                    map={matchMapName}
+                    key={g}
+                    match={match}
+                    gameClicked={gameClicked}
+                    selected={that.props.selectedMatch._id == match._id}
+                  />
                 )
               })
             }
