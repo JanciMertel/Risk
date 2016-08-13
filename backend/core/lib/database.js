@@ -9,7 +9,7 @@ function Database()
     this.connection = null;
     this.connected = false;
 
-    this.connect = function()
+    this.connect = function(cb)
     {
         if(!this.connection) {
             Mongoose.connect('mongodb://188.166.44.50/risk');
@@ -17,6 +17,7 @@ function Database()
             Mongoose.connection.once('open', function() {
                 this.connected = true;
                 console.log('Database connected')
+                cb();
             });
             Mongoose.connection.on('error', function()
             {

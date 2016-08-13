@@ -6,8 +6,11 @@ var ObjectId = Mongoose.Schema.Types.ObjectId;
 
 var LobbySchema = new Mongoose.Schema({
     id : { type : ObjectId },  // room id in io terminology
-    started : { type: Boolean },
-    players : { type : Array }
+    state : { type: Number },
+    name : { type: String },
+    maxPlayers : { type: Number },
+    slots : { type : Array },
+    map : { type: Mongoose.Schema.Types.ObjectId, ref: 'Map' }
 });
 
 LobbySchema.methods.getSockets = function() {
