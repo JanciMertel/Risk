@@ -16,7 +16,7 @@ class LobbyMatchesTable extends React.Component {
     var that = this
 
     return (
-      <table style={this.styleTable()}>
+      <table className="table-scroll">
         <thead>
           <tr>
             <th>id</th>
@@ -39,12 +39,6 @@ class LobbyMatchesTable extends React.Component {
 
   }
 
-  styleTable () {
-    return {
-      width: '100%',
-      padding: '10px'
-    }
-  }
 }
 
 module.exports = LobbyMatchesTable

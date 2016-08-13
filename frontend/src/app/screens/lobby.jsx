@@ -43,26 +43,42 @@ class LobbyScreen extends React.Component {
     var that = this
 
     return (
-      <div id="lobby-wrapper" className="row" >
-        <div>
-          <LobbyMatchesTable
-            gamesList={that.props.matches}
-            gameClicked={that.gameClicked.bind(this)}
-          />
-        </div>
-        <div>
-          <LobbyMatchPreview
-            selectedGame={that.getSelectedGame()}
-          />
-        </div>
-        <div>
-          <LobbyMatchBuilder />
-        </div>
-        <div>
-          <LobbyProfile />
+      <div id="lobby-wrapper" style={this.styleWrapper()} className="row medium-uncollapse large-collapse" >
+        <div className="medium-12 columns">
+
+          <div className="row">
+            <div className="medium-8 columns">
+              <LobbyMatchesTable
+                gamesList={that.props.matches}
+                gameClicked={that.gameClicked.bind(this)}
+              />
+            </div>
+            <div className="medium-4 columns">
+              <LobbyMatchBuilder />
+            </div>
+
+          </div>
+
+          <div className="row">
+            <div className="medium-8 columns">
+              <LobbyMatchPreview
+                selectedGame={that.getSelectedGame()}
+              />
+            </div>
+            <div className="medium-4 columns">
+              <LobbyProfile />
+            </div>
+          </div>
+
         </div>
       </div>
     )
+  }
+
+  styleWrapper () {
+    return {
+      paddingTop: '5em'
+    }
   }
 
 }
