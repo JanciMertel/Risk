@@ -17,7 +17,7 @@ class LobbyMatchPreview extends React.Component {
     if (game){
       return (
         <div style={this.stylePreview()}>
-          <h2>{'GAME PREVIEW  ' + game._id}</h2>
+          <h4>{'GAME PREVIEW  ' + game._id}</h4>
           <dl>
           </dl>
           <button onClick={this.handleJoinClick.bind(this)}>JOIN</button>

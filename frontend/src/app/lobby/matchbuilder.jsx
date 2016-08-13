@@ -8,25 +8,24 @@ var F = require('react-foundation')
 
 class LobbyMatchBuilder extends React.Component {
   constructor(props) {
+    console.log(props)
     super(props);
     this.state = {
-      allMaps: [],
       matchName: '',
       noPlayers: 4,
       aiBots: true,
       private: false,
-      map: ''
+      map: false
     }
-    this.getMaps()
   }
 
-  getMaps () {
-    connection.emit(Actions['LOBBYGETMAPS'], {}, function(maps){
-      that.setState({
-        allMaps: maps
-      })
+  componentWillReceiveProps (nextProps) {
+    console.log(this.props)
+    this.setState({
+      maps: nextProps.maps
     })
   }
+
 
   handleChangeValue (parameter, e) {
     console.log(parameter)
@@ -36,14 +35,15 @@ class LobbyMatchBuilder extends React.Component {
   }
 
   handleCreateMatch () {
-    console.log(this.state)
     var matchObject = {
       map: this.state.map,
-      slots: [],
+      name: this.state.matchName,
       maxPlayers: this.state.noPlayers,
       private: this.state.private,
-      aiBotsAllowed: this.state.aiBots
+      botsAllowed: this.state.aiBots
     }
+
+    console.log(matchObject)
 
     connection.emit(Actions['LOBBYCREATE'], matchObject, function(response){
       console.log('game created')
@@ -55,11 +55,31 @@ class LobbyMatchBuilder extends React.Component {
   render () {
     var that = this
 
+    var mapOptions = []
+
+    mapOptions.push(
+      <option
+        key={9999}
+        value={false}
+      >select map
+      </option>
+    )
+
+    this.props.maps.map(function(map, m){
+      mapOptions.push(
+        <option
+          key={m}
+          value={map._id}
+        >{map.name}
+        </option>
+      )
+    })
+
     return (
       <div style={this.styleBuilder()}>
         <h4> MATCH BUILDER</h4>
 
-        <label>
+        <label key="1">
           Match name:
           <input
             type="text"
@@ -69,7 +89,7 @@ class LobbyMatchBuilder extends React.Component {
           />
         </label>
 
-        <label>
+        <label key="2">
           Number of players:
           <input
             type="number"
@@ -79,54 +99,40 @@ class LobbyMatchBuilder extends React.Component {
           />
         </label>
 
-        <label>
+        <label key="3">
           Computer Bots allowed:
           <F.Switch
             name="aiBots"
-            active={{ text: 'yes' }}
-            inactive={{ text: 'no' }}
-            input={
-              {
-              defaultChecked: that.state.aiBots
-              }
-            }
             onChange={this.handleChangeValue.bind(this, 'aiBots')}
           />
         </label>
 
-        <label>
+        <label key="4">
           Private:
           <F.Switch
             name="private"
-            active={{ text: 'yes' }}
-            inactive={{ text: 'no' }}
-            input={
-              {
-              defaultChecked: that.state.private
-              }
-            }
             onChange={this.handleChangeValue.bind(this, 'private')}
           />
         </label>
 
-        <label>Map:
+        <label key="5">
+          Map:
           <select
-
+            name="map"
+            onChange={this.handleChangeValue.bind(this, 'map')}
           >
             {
-              this.state.allMaps.map(function(map, m){
-                return(
-                  <option
-                    value={map.name}
-                  >Husker
-                  </option>
-                )
-              })
+              mapOptions
             }
           </select>
         </label>
 
-        <F.Button onClick={this.handleCreateMatch.bind(this)} color={F.Colors.SUCCESS}>Create Match</F.Button>
+        <F.Button
+          onClick={this.handleCreateMatch.bind(this)}
+          color={F.Colors.SUCCESS}
+        >
+          Create Match
+        </F.Button>
 
       </div>
     )

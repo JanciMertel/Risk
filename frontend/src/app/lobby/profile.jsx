@@ -9,8 +9,8 @@ class LobbyProfile extends React.Component {
   render () {
     return (
       <div>
-        <h2>PROFILE</h2>
-        <h4>PLAYER</h4>
+        <h4>PROFILE</h4>
+        <b>hello player</b>
       </div>
     )
   }

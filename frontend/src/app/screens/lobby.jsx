@@ -49,12 +49,13 @@ class LobbyScreen extends React.Component {
           <div className="row">
             <div className="medium-8 columns">
               <LobbyMatchesTable
-                gamesList={that.props.matches}
-                gameClicked={that.gameClicked.bind(this)}
+                matchesList={that.props.matches}
+                maps={that.props.maps}
+                matchClicked={that.gameClicked.bind(this)}
               />
             </div>
             <div className="medium-4 columns">
-              <LobbyMatchBuilder />
+              <LobbyMatchBuilder maps={this.props.maps} app={this.props.app} />
             </div>
 
           </div>

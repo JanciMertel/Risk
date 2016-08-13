@@ -20,21 +20,27 @@ class App extends React.Component {
         w: window.innerWidth,
         h: window.innerHeight
       },
-
+      maps: [],
       matches: []
     }
-    setInterval(this.updateServerData.bind(this), 1000)
+
+    setInterval(this.updateServerData.bind(this), 5000)
 
     this.loadMap()
   }
 
   updateServerData () {
-    console.log('data update')
     var that = this
-    if (this.state.screen != 'login') {
+    if (connection.socket) {
       connection.emit(Actions['LOBBYFIND'], {}, function(matches){
         that.setState({
           matches: matches
+        })
+      })
+      connection.emit(Actions['LOBBYGETMAPS'], {}, function(maps){
+        console.log(maps)
+        that.setState({
+          maps: maps
         })
       })
     }
@@ -47,6 +53,14 @@ class App extends React.Component {
 
   componentDidMount () {
     window.addEventListener('resize', this.handleResize.bind(this))
+  }
+
+  loginUser () {
+    connection.connect();
+    connection.bindEvents();
+
+    this.updateServerData()
+    this.changeScreen('lobby')
   }
 
   handleResize (e) {
