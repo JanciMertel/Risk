@@ -1,5 +1,6 @@
 var lobbyController = require('../controllers/LobbyController')
 var mapController = require('../controllers/MapController')
+var server = require('./Server')
 
 var _ = require('lodash');
 
@@ -9,6 +10,7 @@ function Socket(socket)
     this.socket.on('disconnect', this.onDisonnect.bind(this));
     this.socket.on('Lobby::findAllMatches', this.onLobbyFindAllMatches.bind(this))
     this.socket.on('Lobby::createMatch', this.onLobbyCreateMatch.bind(this))
+    this.socket.on('Lobby::joinMatch', this.onLobbyJoinMatch.bind(this))
 
     this.socket.on('Map::index', this.onMapIndex.bind(this))
     this.socket.on('Map::readOne', this.onMapReadOne.bind(this))
@@ -57,6 +59,44 @@ Socket.prototype.onLobbyCreateMatch = function(data, callback)
   {
     console.log(err);
     calback(false)
+  })
+}
+
+Socket.prototype.onLobbyJoinMatch = function(data, callback)
+{
+  var that = this;
+  // test if match exists
+  var promise = lobbyController.index({public: true, '_id' : data.id});
+  promise.then(function(lobby)
+  {
+    if(lobby.length)
+      return calback({message:'ERROR'}}) // not found lobby
+    else
+      lobby = lobby[0];
+
+    if(lobby.maxPlayers <= lobby.slots.legth)
+      return calback({message:'ERROR'}}) // no slot available
+
+
+    lobby.slots.push({type: "player", id: this.getCurrentUser()._id, username: this.getCurrentUser().username})
+
+    // update
+    var updatePromise = lobbyController.update({'_id' : data.id}, {slots: lobby.slots});
+    updatePromise.then(function(lobby)
+    {
+      calback({message:'OK'})
+      that.socket.join(lobby._id) // finally join the room
+
+      server.broadcastRoom(lobby._id, 'Lobby::playerJoined', {type: "player", id: this.getCurrentUser()._id, username: this.getCurrentUser().username})
+    }).catch(function(err)
+    {
+      console.log(err);
+      calback({message:'ERROR'})
+    })
+  }).catch(function(err)
+  {
+    console.log(err);
+    calback({message:'ERROR'})
   })
 }
 

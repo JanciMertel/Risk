@@ -102,6 +102,18 @@ function Server()
     });
     this.httpServer.listen(port);
   }
+
+  /**
+   * Broadcas to chosen room. Callback is not provided, response not needed
+   * @param  {[type]} roomId    [description]
+   * @param  {[type]} eventName [description]
+   * @param  {[type]} eventData [description]
+   * @return {[type]}           [description]
+   */
+  this.broadcastRoom = function(roomId, eventName, eventData)
+  {
+    this.io.to(roomId).emit(eventName, eventData):
+  }
 }
 
 var server = new Server();
