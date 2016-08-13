@@ -46,7 +46,7 @@ Socket.prototype.onLobbyFindAllMatches = function(data, callback)
 Socket.prototype.onLobbyCreateMatch = function(data, callback)
 {
   var that = this;
-  var defaultLobbyData = {state:0, slots: [ { type: "player", id: this.getCurrentUser()._id}], maxPlayers:1, name: '-'}
+  var defaultLobbyData = {slots: [ { type: "player", id: this.getCurrentUser()._id}]}
   var promise = lobbyController.createLobby(_.extend(defaultLobbyData, data));
   promise.then(function(lobby)
   {

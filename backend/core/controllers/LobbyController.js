@@ -8,7 +8,6 @@ function LobbyController()
 {
   this.createLobby = function(data)
   {
-    console.log(data)
     var Lobby = Mongoose.model('Lobby')
     var lobby = new Lobby(data);
     return new Promise(function(resolve, reject)
@@ -25,7 +24,7 @@ function LobbyController()
     var Lobby = Mongoose.model('Lobby')
     return new Promise(function(resolve, reject)
     {
-      Lobby.find({state:0}, function(err, lobbies) {
+      Lobby.find({state:'NEW'}, function(err, lobbies) {
         if (err) reject('Error in query!');
         resolve(lobbies);
       });
