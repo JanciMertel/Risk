@@ -22,7 +22,6 @@ class LobbyScreen extends React.Component {
 
   gameClicked (id, e) {
     var selectedMatch = this.findGameById(id)
-    console.log(selectedMatch)
 
     this.setState({
       selectedMatch: selectedMatch

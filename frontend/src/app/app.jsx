@@ -38,7 +38,6 @@ class App extends React.Component {
         })
       })
       connection.emit(Actions['LOBBYGETMAPS'], {}, function(maps){
-        console.log(maps)
         that.setState({
           maps: maps
         })
