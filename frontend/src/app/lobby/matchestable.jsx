@@ -1,9 +1,9 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 
-var LobbyGameTableItem = require('./gametableitem.jsx')
+var LobbyMatchTableItem = require('./matchtableitem.jsx')
 
-class LobbyGamesTable extends React.Component {
+class LobbyMatchesTable extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -29,7 +29,7 @@ class LobbyGamesTable extends React.Component {
             this.props.gamesList.map(function(game, g){
               var gameClicked = that.handleGameClicked.bind(that, game.id)
               return(
-                <LobbyGameTableItem key={g} game={game} gameClicked={gameClicked}/>
+                <LobbyMatchTableItem key={g} game={game} gameClicked={gameClicked}/>
               )
             })
           }
@@ -47,4 +47,4 @@ class LobbyGamesTable extends React.Component {
   }
 }
 
-module.exports = LobbyGamesTable
+module.exports = LobbyMatchesTable

@@ -3,8 +3,10 @@ var ReactDOM = require('react-dom')
 var _ = require('lodash')
 var Base = require('./base.js')
 var MapHelper = require('./helpers/map.js')
+var connection = require('./helpers/connection.js')
 
 var Screens = require('./enums/screens.js')
+var Actions = require('./enums/actions.js')
 
 class App extends React.Component {
   constructor(props) {
@@ -17,13 +19,29 @@ class App extends React.Component {
       display: {
         w: window.innerWidth,
         h: window.innerHeight
-      }
+      },
+
+      matches: []
     }
+    setInterval(this.updateServerData.bind(this), 1000)
 
     this.loadMap()
   }
 
-  changeScreen(newScreen) {
+  updateServerData () {
+    console.log('data update')
+    var that = this
+    if (this.state.screen != 'login') {
+      connection.emit(Actions['LOBBYFIND'], {}, function(matches){
+        that.setState({
+          matches: matches
+        })
+      })
+    }
+
+  }
+
+  changeScreen (newScreen) {
     this.setState({screen: newScreen})
   }
 
@@ -32,7 +50,6 @@ class App extends React.Component {
   }
 
   handleResize (e) {
-
     this.setState(
       {
         display: {
@@ -57,7 +74,9 @@ class App extends React.Component {
           }
         )
       },
-      function(xhr) {console.log(xhr)}
+      function(xhr) {
+        console.log(xhr)
+      }
     )
   }
 
