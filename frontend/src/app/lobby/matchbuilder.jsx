@@ -1,9 +1,6 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 
-var connection = require('../helpers/connection.js')
-var Actions = require('../enums/actions.js')
-
 var F = require('react-foundation')
 
 class LobbyMatchBuilder extends React.Component {
@@ -38,10 +35,7 @@ class LobbyMatchBuilder extends React.Component {
       private: this.state.private,
       botsAllowed: this.state.aiBots
     }
-
-    connection.emit(Actions['LOBBYCREATE'], matchObject, function(response){
-      console.log('game created')
-    })
+    this.props.matchCreate(matchObject)
 
   }
 

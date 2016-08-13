@@ -11,7 +11,7 @@ class LobbyMatchPreview extends React.Component {
   }
 
   handleJoinClick () {
-    console.log(this)
+    this.props.matchJoin(this.props.selectedMatch._id)
   }
 
   render () {

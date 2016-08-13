@@ -43,11 +43,22 @@ class App extends React.Component {
         })
       })
     }
-
   }
 
   changeScreen (newScreen) {
     this.setState({screen: newScreen})
+  }
+
+  createMatch (matchObject) {
+    connection.emit(Actions['LOBBYCREATE'], matchObject, function(response){
+      console.log('game created')
+    })
+  }
+
+  joinMatch (matchId) {
+    connection.emit(Actions['LOBBYJOIN'], {matchId: matchId}, function(response){
+      console.log('game joined')
+    })
   }
 
   componentDidMount () {

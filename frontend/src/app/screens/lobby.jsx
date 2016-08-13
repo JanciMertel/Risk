@@ -19,6 +19,13 @@ class LobbyScreen extends React.Component {
     }
   }
 
+  handleMatchCreate (matchObject, e) {
+    this.props.app.createMatch(matchObject)
+  }
+
+  handleMatchJoin (matchId, e) {
+    this.props.app.joinMatch(matchId)
+  }
 
   gameClicked (id, e) {
     var selectedMatch = this.findGameById(id)
@@ -54,7 +61,10 @@ class LobbyScreen extends React.Component {
               />
             </div>
             <div className="medium-4 columns">
-              <LobbyMatchBuilder maps={this.props.maps} app={this.props.app} />
+              <LobbyMatchBuilder
+                maps={this.props.maps}
+                matchCreate={this.handleMatchCreate.bind(this)}
+              />
             </div>
 
           </div>
@@ -64,6 +74,7 @@ class LobbyScreen extends React.Component {
               <LobbyMatchPreview
                 map={that.findMapById(this.state.selectedMatch.map)}
                 selectedMatch={this.state.selectedMatch}
+                matchJoin={this.handleMatchJoin.bind(this)}
               />
             </div>
             <div className="medium-4 columns">
