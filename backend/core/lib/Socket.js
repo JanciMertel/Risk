@@ -11,6 +11,7 @@ function Socket(socket)
     this.socket.on('Lobby::createMatch', this.onLobbyCreateMatch.bind(this))
 
     this.socket.on('Map::index', this.onMapIndex.bind(this))
+    this.socket.on('Map::readOne', this.onMapReadOne.bind(this))
 }
 
 Socket.prototype.onDisonnect = function()
@@ -73,5 +74,20 @@ Socket.prototype.onMapIndex = function(data, callback)
   })
 }
 
+Socket.prototype.onMapReadOne = function(data, callback)
+{
+  var that = this;
+  var promise = mapController.index( {'_id' : data.id });
+  promise.then(function(map)
+  {
+    if(map.length)
+      map = map[0];
+    callback(map)
+  }).catch(function(err)
+  {
+    console.log(err);
+    calback(false)
+  })
+}
 
 module.exports = Socket;
