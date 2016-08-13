@@ -1,11 +1,16 @@
 var lobbyController = require('../controllers/LobbyController')
+var mapController = require('../controllers/MapController')
+
+var _ = require('lodash');
 
 function Socket(socket)
 {
     this.socket = socket;
     this.socket.on('disconnect', this.onDisonnect.bind(this));
-    this.socket.on('Lobby::findAllMatches', this.onFindAllMatches.bind(this))
-    this.socket.on('Lobby::createMatch', this.onCreateMatch.bind(this))  
+    this.socket.on('Lobby::findAllMatches', this.onLobbyFindAllMatches.bind(this))
+    this.socket.on('Lobby::createMatch', this.onLobbyCreateMatch.bind(this))
+
+    this.socket.on('Map::index', this.onMapIndex.bind(this))
 }
 
 Socket.prototype.onDisonnect = function()
@@ -24,9 +29,8 @@ Socket.prototype.getCurrentUser = function()
  * @param  {Function} callback [description]
  * @return {[type]}            [description]
  */
-Socket.prototype.onFindAllMatches = function(data, callback)
+Socket.prototype.onLobbyFindAllMatches = function(data, callback)
 {
-    console.log('onFindAllMatches')
     var that = this;
     var promise = lobbyController.findAvailableLobbies();
     promise.then(function(lobbies)
@@ -39,10 +43,11 @@ Socket.prototype.onFindAllMatches = function(data, callback)
     })
 }
 
-Socket.prototype.onCreateMatch = function(data, callback)
+Socket.prototype.onLobbyCreateMatch = function(data, callback)
 {
   var that = this;
-  var promise = lobbyController.createLobby({started:0, players: [this.getCurrentUser()._id]});
+  var defaultLobbyData = {state:0, slots: [ { type: "player", id: this.getCurrentUser()._id}], maxPlayers:1, name: '-'}
+  var promise = lobbyController.createLobby(_.extend(defaultLobbyData, data));
   promise.then(function(lobby)
   {
     that.socket.join(lobby._id)
@@ -53,4 +58,20 @@ Socket.prototype.onCreateMatch = function(data, callback)
     calback(false)
   })
 }
+
+Socket.prototype.onMapIndex = function(data, callback)
+{
+  var that = this;
+  var promise = mapController.index({public: true});
+  promise.then(function(maps)
+  {
+    callback(maps)
+  }).catch(function(err)
+  {
+    console.log(err);
+    calback(false)
+  })
+}
+
+
 module.exports = Socket;
