@@ -11,29 +11,13 @@ class LobbyMatchTableItem extends React.Component {
     var game = this.props.game
 
     return (
-      <tr onClick={this.props.gameClicked.bind(this, game.id)} style={this.styleTr()}>
-        <td style={this.styleTd()}>{game._id}</td>
+      <tr onClick={this.props.gameClicked.bind(this, game.id)}>
+        <td >{game._id}</td>
       </tr>
     )
   }
-  // <td style={this.styleTd()}>{game.name}</td>
-  // <td style={this.styleTd()}>{game.playersNow + '/' + game.playersAll}</td>
-
-  styleTr () {
-    var color = 'white'
-    if (this.props.game.selected) {
-      color = 'lightblue'
-    }
-    return {
-      backgroundColor: color
-    }
-  }
-
-  styleTd () {
-    return {
-      textAlign: 'center'
-    }
-  }
+  // <td>{game.name}</td>
+  // <td>{game.playersNow + '/' + game.playersAll}</td>
 }
 
 module.exports = LobbyMatchTableItem
