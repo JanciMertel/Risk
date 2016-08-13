@@ -48,11 +48,8 @@ class LoginScreen extends React.Component {
       'http://127.0.0.1:3000/login',
       loginData,
       function(data) {
-        connection.connect();
-        connection.bindEvents();
-        // callback not required...connection.emit works even if not connected(from 1.0.0?)
         that.changeLoginState('login success')
-        that.props.app.changeScreen('lobby')
+        that.props.app.loginUser()
       },
       function() {
         that.changeLoginState('login error')
@@ -76,38 +73,73 @@ class LoginScreen extends React.Component {
   render () {
     var that = this
 
-    console.log(F)
-
     return (
       <div id="login-wrapper" className="row">
         <div className="large-6">
           <h1>RISK GAME LOGIN PAGE</h1>
           <h2>please LOGIN </h2>
 
-          <p>Login
-            <input type="text" name="login" value={this.state.login} onChange={this.handleChangeValue.bind(this, 'login')} />
-          </p>
+          <label key="loginname">
+            Login:
+            <input
+              type="text"
+              name="login"
+              value={this.state.login}
+              onChange={this.handleChangeValue.bind(this, 'login')}
+            />
+          </label>
 
-          <p>Pass:
-            <input type="password" name="pass" value={this.state.pass} onChange={this.handleChangeValue.bind(this, 'pass')} />
-          </p>
+          <label key="password">
+            Pass:
+            <input
+              type="password"
+              name="pass"
+              value={this.state.pass}
+              onChange={this.handleChangeValue.bind(this, 'pass')}
+            />
+          </label>
 
-          <F.Button color={F.Colors.SUCCESS} onClick={this.doLogin.bind(this)}>LOGIN</F.Button>
+          <F.Button
+            color={F.Colors.SUCCESS}
+            onClick={this.doLogin.bind(this)}
+          >
+            LOGIN
+          </F.Button>
+
           <p>{this.state.loginState}</p>
+
 
           <h2>...or REGISTER </h2>
 
-          <p>Email
-            <input type="text" name="register-mail" value={this.state.registerMail} onChange={this.handleChangeValue.bind(this, 'registerMail')} />
-          </p>
+          <label key="email">
+            Email:
+            <input
+              type="email"
+              name="register-mail"
+              value={this.state.registerMail}
+              onChange={this.handleChangeValue.bind(this, 'registerMail')}
+            />
+          </label>
 
-          <p>Login:
-            <input type="email" name="register-login" value={this.state.registerLogin} onChange={this.handleChangeValue.bind(this, 'registerLogin')} />
-          </p>
+          <label key="register-login">
+            Login:
+            <input
+              type="text"
+              name="register-login"
+              value={this.state.registerLogin}
+              onChange={this.handleChangeValue.bind(this, 'registerLogin')}
+            />
+          </label>
 
-          <p>Pass:
-            <input type="password" name="register-pass" value={this.state.registerPass} onChange={this.handleChangeValue.bind(this, 'registerPass')} />
-          </p>
+          <label key="register-pass">
+            Password:
+            <input
+              type="password"
+              name="register-pass"
+              value={this.state.registerPass}
+              onChange={this.handleChangeValue.bind(this, 'registerPass')}
+            />
+          </label>
 
           <F.Button color={F.Colors.ALERT} onClick={this.doRegister.bind(this)}>REGISTER</F.Button>
           <p>{this.state.registerState}</p>

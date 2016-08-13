@@ -19,23 +19,28 @@ class LobbyScreen extends React.Component {
     }
   }
 
+  handleMatchCreate (matchObject, e) {
+    this.props.app.createMatch(matchObject)
+  }
+
+  handleMatchJoin (matchId, e) {
+    this.props.app.joinMatch(matchId)
+  }
 
   gameClicked (id, e) {
+    var selectedMatch = this.findGameById(id)
 
-    this.props.matches.lameGameList.map(function(game, g){
-      game.selected = false
+    this.setState({
+      selectedMatch: selectedMatch
     })
-
-    this.findGameById(id).selected = true
-    this.setState(this.state)
   }
 
   findGameById (id) {
-    return _.find(this.state.lameGameList, {id: id})
+    return _.find(this.props.matches, {_id: id})
   }
 
-  getSelectedGame () {
-    return _.find(this.state.lameGameList, {selected: true})
+  findMapById (id) {
+    return _.find(this.props.maps, {'_id': id})
   }
 
 
@@ -49,12 +54,17 @@ class LobbyScreen extends React.Component {
           <div className="row">
             <div className="medium-8 columns">
               <LobbyMatchesTable
-                gamesList={that.props.matches}
-                gameClicked={that.gameClicked.bind(this)}
+                matchesList={that.props.matches}
+                selectedMatch={this.state.selectedMatch}
+                maps={that.props.maps}
+                matchClicked={that.gameClicked.bind(this)}
               />
             </div>
             <div className="medium-4 columns">
-              <LobbyMatchBuilder />
+              <LobbyMatchBuilder
+                maps={this.props.maps}
+                matchCreate={this.handleMatchCreate.bind(this)}
+              />
             </div>
 
           </div>
@@ -62,7 +72,9 @@ class LobbyScreen extends React.Component {
           <div className="row">
             <div className="medium-8 columns">
               <LobbyMatchPreview
-                selectedGame={that.getSelectedGame()}
+                map={that.findMapById(this.state.selectedMatch.map)}
+                selectedMatch={this.state.selectedMatch}
+                matchJoin={this.handleMatchJoin.bind(this)}
               />
             </div>
             <div className="medium-4 columns">

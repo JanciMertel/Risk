@@ -1,26 +1,39 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 
+var F = require('react-foundation')
+var connection = require('../helpers/connection.js')
+var Actions = require('../enums/actions.js')
+
 class LobbyMatchPreview extends React.Component {
   constructor(props) {
     super(props);
   }
 
   handleJoinClick () {
-    console.log(this)
+    this.props.matchJoin(this.props.selectedMatch._id)
   }
 
   render () {
     var that = this
-    var game = this.props.selectedGame
+    var selectedMatch = this.props.selectedMatch
 
-    if (game){
+    if (selectedMatch){
       return (
         <div style={this.stylePreview()}>
-          <h2>{'GAME PREVIEW  ' + game._id}</h2>
+          <h4>{'GAME PREVIEW  ' + selectedMatch.name}</h4>
           <dl>
+            <dt>map</dt><dd>{this.props.map.name}</dd>
+            <dt>state</dt><dd>{selectedMatch.state}</dd>
+            <dt>AI bots enabled</dt><dd>{selectedMatch.botsEnables}</dd>
+            <dt>max players enabled</dt><dd>{selectedMatch.maxPlayers}</dd>
           </dl>
-          <button onClick={this.handleJoinClick.bind(this)}>JOIN</button>
+          <F.Button
+            onClick={this.handleJoinClick.bind(this)}
+            color={F.Colors.WARNING}
+          >
+            Join Match
+          </F.Button>
         </div>
       )
 
@@ -41,7 +54,5 @@ class LobbyMatchPreview extends React.Component {
   }
 }
 
-// <dt>map</dt><dd>{game.map}</dd>
-// <dt>name</dt><dd>{game.name}</dd>
-// <dt>players</dt><dd>{game.playersNow}</dd>
+
 module.exports = LobbyMatchPreview

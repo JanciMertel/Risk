@@ -8,33 +8,49 @@ class LobbyMatchesTable extends React.Component {
     super(props);
   }
 
-  handleGameClicked (gameIndex) {
-    this.props.gameClicked(gameIndex)
+  handleMatchClicked (gameIndex) {
+    this.props.matchClicked(gameIndex)
   }
 
   render () {
     var that = this
 
     return (
-      <table className="table-scroll">
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>players</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            this.props.gamesList.map(function(game, g){
-              var gameClicked = that.handleGameClicked.bind(that, game.id)
-              return(
-                <LobbyMatchTableItem key={g} game={game} gameClicked={gameClicked}/>
-              )
-            })
-          }
-        </tbody>
-      </table>
+      <div>
+        <h4>MATCHES LIST</h4>
+        <table className="table-scroll">
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>state</th>
+              <th>map</th>
+              <th>players</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              this.props.matchesList.map(function(match, g){
+                var gameClicked = that.handleMatchClicked.bind(that, match._id)
+
+                var matchMapName = ''
+                if (that.props.maps.length) {
+                  matchMapName = _.find(that.props.maps, {'_id': match.map}).name
+                }
+
+                return(
+                  <LobbyMatchTableItem
+                    map={matchMapName}
+                    key={g}
+                    match={match}
+                    gameClicked={gameClicked}
+                    selected={that.props.selectedMatch._id == match._id}
+                  />
+                )
+              })
+            }
+          </tbody>
+        </table>
+      </div>
     )
 
   }
