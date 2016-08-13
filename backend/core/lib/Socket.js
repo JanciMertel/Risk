@@ -38,11 +38,11 @@ Socket.prototype.onLobbyFindAllMatches = function(data, callback)
     var promise = lobbyController.findAvailableLobbies();
     promise.then(function(lobbies)
     {
-      callback(lobbies)
+      callback({message: 'OK', data: lobbies})
     }).catch(function(err)
     {
       console.log(err);
-      calback(false)
+      calback({message: "ERROR"})
     })
 }
 
@@ -54,11 +54,11 @@ Socket.prototype.onLobbyCreateMatch = function(data, callback)
   promise.then(function(lobby)
   {
     that.socket.join(lobby._id)
-    callback(lobby.toObject())
+    callback({message: "OK", data: lobby.toObject()})
   }).catch(function(err)
   {
     console.log(err);
-    calback(false)
+    calback({message: "ERROR"})
   })
 }
 
@@ -106,11 +106,11 @@ Socket.prototype.onMapIndex = function(data, callback)
   var promise = mapController.index({public: true});
   promise.then(function(maps)
   {
-    callback(maps)
+    callback({message: 'OK', data: maps})
   }).catch(function(err)
   {
     console.log(err);
-    calback(false)
+    calback({message: 'ERROR'})
   })
 }
 
