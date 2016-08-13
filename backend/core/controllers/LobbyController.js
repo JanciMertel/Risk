@@ -30,6 +30,26 @@ function LobbyController()
       });
     });
   }
+
+  this.index = function(data, populate)
+  {
+    var Lobby = Mongoose.model('Lobby')
+    return new Promise(function(resolve, reject)
+    {
+      var request = Lobby.find(data);
+      if(populate && populate.length)
+      {
+        for(var i in populate)
+        {
+          request = request.populate(populate[i]);
+        }
+      }
+      request.exec(function(err, lobies) {
+        if (err) reject('Error in query!');
+        resolve(lobies);
+      });
+    });
+  }
 }
 
 var lobbyController = new LobbyController()

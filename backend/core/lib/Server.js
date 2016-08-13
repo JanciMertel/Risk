@@ -112,7 +112,7 @@ function Server()
    */
   this.broadcastRoom = function(roomId, eventName, eventData)
   {
-    this.io.to(roomId).emit(eventName, eventData):
+    this.io.to(roomId).emit(eventName, eventData);
   }
 }
 

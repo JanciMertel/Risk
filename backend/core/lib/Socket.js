@@ -66,17 +66,16 @@ Socket.prototype.onLobbyJoinMatch = function(data, callback)
 {
   var that = this;
   // test if match exists
-  var promise = lobbyController.index({public: true, '_id' : data.id});
+  var promise = lobbyController.index({private: false, '_id' : data.id}, ['map']);
   promise.then(function(lobby)
   {
     if(lobby.length)
-      return calback({message:'ERROR'}}) // not found lobby
+      return calback({message:'ERROR'}) // not found lobby
     else
       lobby = lobby[0];
 
     if(lobby.maxPlayers <= lobby.slots.legth)
-      return calback({message:'ERROR'}}) // no slot available
-
+      return calback({message:'ERROR'}) // no slot available
 
     lobby.slots.push({type: "player", id: this.getCurrentUser()._id, username: this.getCurrentUser().username})
 
@@ -84,7 +83,7 @@ Socket.prototype.onLobbyJoinMatch = function(data, callback)
     var updatePromise = lobbyController.update({'_id' : data.id}, {slots: lobby.slots});
     updatePromise.then(function(lobby)
     {
-      calback({message:'OK'})
+      calback({message:'OK', data: lobby.map})
       that.socket.join(lobby._id) // finally join the room
 
       server.broadcastRoom(lobby._id, 'Lobby::playerJoined', {type: "player", id: this.getCurrentUser()._id, username: this.getCurrentUser().username})
@@ -103,7 +102,7 @@ Socket.prototype.onLobbyJoinMatch = function(data, callback)
 Socket.prototype.onMapIndex = function(data, callback)
 {
   var that = this;
-  var promise = mapController.index({public: true});
+  var promise = mapController.index({private: false});
   promise.then(function(maps)
   {
     callback({message: 'OK', data: maps})
@@ -122,11 +121,11 @@ Socket.prototype.onMapReadOne = function(data, callback)
   {
     if(map.length)
       map = map[0];
-    callback(map)
+    callback({message: 'OK', data: map})
   }).catch(function(err)
   {
     console.log(err);
-    calback(false)
+    calback({message: 'ERROR'})
   })
 }
 
