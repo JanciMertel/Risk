@@ -20,26 +20,23 @@ class App extends React.Component {
         name: 'random_game_123',
         mapName: '',
         slots: [
-          {username: 'player 1', type: 'player', admin: true},
-          {username: 'player 2', type: 'player', admin: false},
-          {username: 'player 3', type: 'player', admin: false},
-          {username: 'AI 1', type: 'ai', admin: false},
-          {username: 'AI 2', type: 'ai', admin: false}
+          {id: '', username: 'player 1', type: 'player', admin: true},
+          {id: '', username: 'player 2', type: 'player', admin: false},
+          {id: '', username: 'player 3', type: 'player', admin: false},
+          {id: '', username: 'AI 1', type: 'ai', admin: false},
+          {id: '', username: 'AI 2', type: 'ai', admin: false}
         ],
         chats: [
-          {author: 'player1', message: 'hi all'},
-          {author: 'player2', message: 'go fuck yourself'}
+          {author: 'player1', message: 'hi all', time: ''},
+          {author: 'player2', message: 'go fuck yourself', time: ''}
         ],
         logs: [
-
+          {message: 'match created', time: ''},
         ],
-        gameState: {
-
-        }
+        map: false
 
       },
 
-      map: false,
       screen: 'game',
 
       display: {
@@ -82,6 +79,10 @@ class App extends React.Component {
   createMatch (matchObject) {
     var that = this
     connection.emit(Actions['LOBBYCREATE'], matchObject, function(response){
+      // response.status
+      // response.message
+      // response.data -> lobby
+      //   response.data.map.data -> JSON map
       if (response.message == Responses['OK']){
         that.prepareGame(response.data)
         console.log('game created')
