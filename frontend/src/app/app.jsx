@@ -14,12 +14,33 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+
+      // testing purposes
       match: {
+        name: 'random_game_123',
         mapName: '',
+        slots: [
+          {username: 'player 1', type: 'player', admin: true},
+          {username: 'player 2', type: 'player', admin: false},
+          {username: 'player 3', type: 'player', admin: false},
+          {username: 'AI 1', type: 'ai', admin: false},
+          {username: 'AI 2', type: 'ai', admin: false}
+        ],
+        chats: [
+          {author: 'player1', message: 'hi all'},
+          {author: 'player2', message: 'go fuck yourself'}
+        ],
+        logs: [
+
+        ],
+        gameState: {
+
+        }
 
       },
+
       map: false,
-      screen: 'login',
+      screen: 'game',
 
       display: {
         w: window.innerWidth,

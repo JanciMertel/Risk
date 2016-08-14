@@ -5,6 +5,11 @@ var Stage = require('react-konva').Stage
 var Layer = require('react-konva').Layer
 var MapGrid = require('../models/mapgrid.jsx')
 
+var PlayersPanel = require('../game/playerspanel.jsx')
+var ChatPanel = require('../game/chatpanel.jsx')
+var LogsPanel = require('../game/logpanel.jsx')
+
+
 class GameScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -14,15 +19,53 @@ class GameScreen extends React.Component {
     var that = this
 
     return (
-      <Stage
-        width={this.props.display.w}
-        height={this.props.display.h}
-      >
-        <Layer>
-          <MapGrid {...this.props} />
-        </Layer>
-      </Stage>
+      <div id="game-wrapper" style={this.styleWrapper()} className="row medium-uncollapse large-collapse" >
+        <h2>{'GAME ' + this.props.match.name}</h2>
+
+        <div className="row">
+          <PlayersPanel players={this.props.match.slots} />
+        </div>
+
+        <div id="stage-wrapper" style={this.styleStageWrapper()}>
+          <Stage height={this.props.display.h - 300} >
+            <Layer>
+              <MapGrid {...this.props} />
+            </Layer>
+          </Stage>
+        </div>
+
+        <div className="row" style={this.styleBottomPanel()}>
+
+          <div key="b1" className="large-6 columns">
+            <ChatPanel chats={this.props.match.chats} />
+          </div>
+
+          <div key="b2" className="large-6 columns">
+            <LogsPanel logs={this.props.match.logs} />
+          </div>
+
+        </div>
+      </div>
     )
+  }
+
+  styleBottomPanel () {
+    return {
+      height: '100px',
+      overflow: 'hidden'
+    }
+  }
+
+  styleStageWrapper () {
+    return {
+      border: '2px solid black'
+    }
+  }
+
+  styleWrapper () {
+    return {
+      paddingTop: '3em'
+    }
   }
 }
 

@@ -13,7 +13,6 @@ var MapHelper = {
   getHexes (map) {
     var hexes = []
 
-
     Array(map.height).fill().map(function(row, r){
       Array(map.width).fill().map(function(column, c){
         var index = r + '-' + c
