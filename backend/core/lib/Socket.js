@@ -38,11 +38,11 @@ Socket.prototype.onLobbyFindAllMatches = function(data, callback)
     var promise = lobbyController.findAvailableLobbies();
     promise.then(function(lobbies)
     {
-      callback({message: 'OK', data: lobbies})
+      callback({status: 'OK', data: lobbies})
     }).catch(function(err)
     {
       console.log(err);
-      callback({message: "ERROR"})
+      callback({status: "ERROR"})
     })
 }
 
@@ -54,29 +54,29 @@ Socket.prototype.onLobbyCreateMatch = function(data, callback)
   promise.then(function(lobby)
   {
     that.socket.join(lobby._id)
-    callback({message: "OK", data: lobby.toObject()})
+    callback({status: "OK", data: lobby.toObject()})
   }).catch(function(err)
   {
     console.log(err);
-    callback({message: "ERROR"})
+    callback({status: "ERROR"})
   })
 }
 
 Socket.prototype.onLobbyJoinMatch = function(data, callback)
 {
   var that = this;
-  
+
   // test if match exists
   var promise = lobbyController.index({'_id' : data.id}, ['map']);
   promise.then(function(lobby)
   {
     if(!lobby.length)
-      return callback({message:'ERROR', description: 'lobby not found'}) // not found lobby
+      return callback({status:'ERROR', description: 'lobby not found'}) // not found lobby
     else
       lobby = lobby[0];
 
-    if(lobby.maxPlayers <= lobby.slots.legth)
-      return callback({message:'ERROR', description: 'no slots available'}) // no slot available
+    if(lobby.maxPlayers <= lobby.slots.length)
+      return callback({status:'ERROR', description: 'no slots available'}) // no slot available
 
     lobby.slots.push({type: "player", id: that.getCurrentUser()._id, username: that.getCurrentUser().username})
 
@@ -84,19 +84,19 @@ Socket.prototype.onLobbyJoinMatch = function(data, callback)
     var updatePromise = lobbyController.update({'_id' : data.id}, {slots: lobby.slots});
     updatePromise.then(function(lobby)
     {
-      callback({message:'OK', data: lobby.map})
+      callback({status:'OK', data: lobby.map})
       that.socket.join(lobby._id) // finally join the room
 
       server.broadcastRoom(lobby._id, 'Lobby::playerJoined', {type: "player", id: that.getCurrentUser()._id, username: that.getCurrentUser().username})
     }).catch(function(err)
     {
       console.log(err);
-      callback({message:'ERROR', description: err})
+      callback({status:'ERROR', description: err})
     })
   }).catch(function(err)
   {
     console.log(err);
-    callback({message:'ERROR', description: err})
+    callback({status:'ERROR', description: err})
   })
 }
 
@@ -106,11 +106,11 @@ Socket.prototype.onMapIndex = function(data, callback)
   var promise = mapController.index({});
   promise.then(function(maps)
   {
-    callback({message: 'OK', data: maps})
+    callback({status: 'OK', data: maps})
   }).catch(function(err)
   {
     console.log(err);
-    callback({message: 'ERROR'})
+    callback({status: 'ERROR'})
   })
 }
 
@@ -122,11 +122,11 @@ Socket.prototype.onMapReadOne = function(data, callback)
   {
     if(map.length)
       map = map[0];
-    callback({message: 'OK', data: map})
+    callback({status: 'OK', data: map})
   }).catch(function(err)
   {
     console.log(err);
-    callback({message: 'ERROR'})
+    callback({status: 'ERROR'})
   })
 }
 
