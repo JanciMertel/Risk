@@ -55,34 +55,14 @@ class Connection {
   // use stuff in here somewhere else
   bindEvents () {
     this.socket.on('Lobby::startMatch', this.onLobbyStartMatch)
-    this.socket.on('Match::info', this.onMatchInfo)
-    this.socket.on('Match::step', this.onMatchStep)
-    this.socket.on('Match::actionInfo', this.onMatchActionInfo)
-    this.socket.on('Match::endTurn', this.onGameEndTurn)
-    this.socket.on('Match::endMatch', this.onGameEndMatch)
+    this.socket.on('Lobby::playerJoined', this.onPlayerJoined)
   }
 
   onLobbyStartMatch () {
 
   }
 
-  onMatchInfo () {
-
-  }
-
-  onMatchStep () {
-
-  }
-
-  onMatchActionInfo () {
-
-  }
-
-  onMatchEndTurn () {
-
-  }
-
-  onMatchEndMatch () {
+  onPlayerJoined () {
 
   }
 }

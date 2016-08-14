@@ -1,18 +1,23 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var _ = require('lodash')
+
 var Base = require('./base.js')
 var MapHelper = require('./helpers/map.js')
 var connection = require('./helpers/connection.js')
 
 var Screens = require('./enums/screens.js')
 var Actions = require('./enums/actions.js')
+var Responses = require('./enums/responses.js')
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mapName: 'map1',
+      match: {
+        mapName: '',
+
+      },
       map: false,
       screen: 'login',
 
@@ -25,8 +30,6 @@ class App extends React.Component {
     }
 
     setInterval(this.updateServerData.bind(this), 5000)
-
-    this.loadMap()
   }
 
   updateServerData () {
@@ -34,15 +37,21 @@ class App extends React.Component {
     if (connection.socket) {
       connection.emit(Actions['LOBBYFIND'], {}, function(matches){
         that.setState({
-          matches: matches
+          matches: matches.data
         })
       })
       connection.emit(Actions['LOBBYGETMAPS'], {}, function(maps){
         that.setState({
-          maps: maps
+          maps: maps.data
         })
       })
     }
+  }
+
+  prepareGame (gameData) {
+    console.log(gameData)
+    this.changeScreen ('game')
+
   }
 
   changeScreen (newScreen) {
@@ -50,14 +59,23 @@ class App extends React.Component {
   }
 
   createMatch (matchObject) {
+    var that = this
     connection.emit(Actions['LOBBYCREATE'], matchObject, function(response){
-      console.log('game created')
+      if (response.message == Responses['OK']){
+        that.prepareGame(response.data)
+        console.log('game created')
+      }
     })
   }
 
   joinMatch (matchId) {
-    connection.emit(Actions['LOBBYJOIN'], {matchId: matchId}, function(response){
-      console.log('game joined')
+    var that = this
+    connection.emit(Actions['LOBBYJOIN'], {id: matchId}, function(response){
+      console.log(response)
+      if (response.message == Responses['OK']){
+        that.prepareGame(response.data)
+        console.log('game joined')
+      }
     })
   }
 

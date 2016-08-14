@@ -42,7 +42,7 @@ Socket.prototype.onLobbyFindAllMatches = function(data, callback)
     }).catch(function(err)
     {
       console.log(err);
-      calback({message: "ERROR"})
+      callback({message: "ERROR"})
     })
 }
 
@@ -58,58 +58,59 @@ Socket.prototype.onLobbyCreateMatch = function(data, callback)
   }).catch(function(err)
   {
     console.log(err);
-    calback({message: "ERROR"})
+    callback({message: "ERROR"})
   })
 }
 
 Socket.prototype.onLobbyJoinMatch = function(data, callback)
 {
   var that = this;
+  
   // test if match exists
-  var promise = lobbyController.index({private: false, '_id' : data.id}, ['map']);
+  var promise = lobbyController.index({'_id' : data.id}, ['map']);
   promise.then(function(lobby)
   {
-    if(lobby.length)
-      return calback({message:'ERROR'}) // not found lobby
+    if(!lobby.length)
+      return callback({message:'ERROR', description: 'lobby not found'}) // not found lobby
     else
       lobby = lobby[0];
 
     if(lobby.maxPlayers <= lobby.slots.legth)
-      return calback({message:'ERROR'}) // no slot available
+      return callback({message:'ERROR', description: 'no slots available'}) // no slot available
 
-    lobby.slots.push({type: "player", id: this.getCurrentUser()._id, username: this.getCurrentUser().username})
+    lobby.slots.push({type: "player", id: that.getCurrentUser()._id, username: that.getCurrentUser().username})
 
     // update
     var updatePromise = lobbyController.update({'_id' : data.id}, {slots: lobby.slots});
     updatePromise.then(function(lobby)
     {
-      calback({message:'OK', data: lobby.map})
+      callback({message:'OK', data: lobby.map})
       that.socket.join(lobby._id) // finally join the room
 
-      server.broadcastRoom(lobby._id, 'Lobby::playerJoined', {type: "player", id: this.getCurrentUser()._id, username: this.getCurrentUser().username})
+      server.broadcastRoom(lobby._id, 'Lobby::playerJoined', {type: "player", id: that.getCurrentUser()._id, username: that.getCurrentUser().username})
     }).catch(function(err)
     {
       console.log(err);
-      calback({message:'ERROR'})
+      callback({message:'ERROR', description: err})
     })
   }).catch(function(err)
   {
     console.log(err);
-    calback({message:'ERROR'})
+    callback({message:'ERROR', description: err})
   })
 }
 
 Socket.prototype.onMapIndex = function(data, callback)
 {
   var that = this;
-  var promise = mapController.index({private: false});
+  var promise = mapController.index({});
   promise.then(function(maps)
   {
     callback({message: 'OK', data: maps})
   }).catch(function(err)
   {
     console.log(err);
-    calback({message: 'ERROR'})
+    callback({message: 'ERROR'})
   })
 }
 
@@ -125,7 +126,7 @@ Socket.prototype.onMapReadOne = function(data, callback)
   }).catch(function(err)
   {
     console.log(err);
-    calback({message: 'ERROR'})
+    callback({message: 'ERROR'})
   })
 }
 

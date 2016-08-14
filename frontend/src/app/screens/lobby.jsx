@@ -46,7 +46,8 @@ class LobbyScreen extends React.Component {
 
   render () {
     var that = this
-
+    var selectedMap = that.findMapById(that.state.selectedMatch.map)
+    
     return (
       <div id="lobby-wrapper" style={this.styleWrapper()} className="row medium-uncollapse large-collapse" >
         <div className="medium-12 columns">
@@ -72,7 +73,7 @@ class LobbyScreen extends React.Component {
           <div className="row">
             <div className="medium-8 columns">
               <LobbyMatchPreview
-                map={that.findMapById(this.state.selectedMatch.map)}
+                map={selectedMap}
                 selectedMatch={this.state.selectedMatch}
                 matchJoin={this.handleMatchJoin.bind(this)}
               />
