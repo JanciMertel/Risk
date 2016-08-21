@@ -79,7 +79,7 @@ class LobbyScreen extends React.Component {
               />
             </div>
             <div className="medium-4 columns">
-              <LobbyProfile />
+              <LobbyProfile user={this.props.user}/>
             </div>
           </div>
 

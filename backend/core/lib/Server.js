@@ -18,14 +18,14 @@ passport.use(new Strategy({
   },
   function(req, username, password, done) {
     Mongoose.model('User').findOne({ username: username}, function (err, user) {
-      req.message = 'ERROR'; // default message
+      req.loginStatus = 'ERROR'; // default message
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
       if (!user.validPassword(password))
       {
         return done(null, false);
       }
-      req.message = 'OK';
+      req.loginStatus = 'OK';
       return done(null, user);
     });
 }));
@@ -91,7 +91,7 @@ function Server()
     app.post('/login',
       passport.authenticate('local', { failureRedirect: '/login' }),
       function(req, res) {
-        res.json({message: req.message})
+        res.json({status: req.loginStatus, data: req.user})
         res.end();  // return nothing simply...
       }
     );

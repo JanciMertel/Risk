@@ -21,7 +21,7 @@ class Connection {
       if (request.readyState === 4) {
         var response = JSON.parse(request.responseText);
         if (request.status === 200) {
-            if(response.message && response.message == 'OK')
+            if(response.status && response.status == 'OK')
             {
               success(response);
             }

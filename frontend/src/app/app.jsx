@@ -14,7 +14,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      user: null,
       // testing purposes
       match: {
         name: 'random_game_123',
@@ -37,7 +37,7 @@ class App extends React.Component {
 
       },
 
-      screen: 'game',
+      screen: 'login',
 
       display: {
         w: window.innerWidth,
@@ -105,7 +105,10 @@ class App extends React.Component {
     window.addEventListener('resize', this.handleResize.bind(this))
   }
 
-  loginUser () {
+  loginUser (loginData) {
+    this.setState({
+      user: loginData
+    })
     connection.connect();
     connection.bindEvents();
 
@@ -146,9 +149,9 @@ class App extends React.Component {
 
   render () {
     var that = this
-    var propsObject = this.state
-    propsObject.app = this
-    var screen = React.createElement(Screens[this.state.screen], propsObject);
+    var stateObject = that.state
+    stateObject.app = that
+    var screen = React.createElement(Screens[that.state.screen], stateObject);
 
     return (
       <div id="canvas-wrapper">

@@ -10,7 +10,7 @@ class LobbyProfile extends React.Component {
     return (
       <div>
         <h4>PROFILE</h4>
-        <b>hello player</b>
+        <b>{this.props.user.username}</b>
       </div>
     )
   }
