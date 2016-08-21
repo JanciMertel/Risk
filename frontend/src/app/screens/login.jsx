@@ -48,7 +48,6 @@ class LoginScreen extends React.Component {
       'http://127.0.0.1:3000/login',
       loginData,
       function(data) {
-        console.log(data)
         that.changeLoginState('login success')
         that.props.app.loginUser(data.data)
       },
@@ -73,7 +72,6 @@ class LoginScreen extends React.Component {
 
   render () {
     var that = this
-console.log(this.props, 'login screen');
     return (
       <div id="login-wrapper" className="row">
         <div className="large-6">

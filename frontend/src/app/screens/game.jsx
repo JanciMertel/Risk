@@ -5,6 +5,9 @@ var Stage = require('react-konva').Stage
 var Layer = require('react-konva').Layer
 var MapGrid = require('../models/mapgrid.jsx')
 
+var F = require('react-foundation')
+var Row = F.Row
+
 var PlayersPanel = require('../game/playerspanel.jsx')
 var ChatPanel = require('../game/chatpanel.jsx')
 var LogsPanel = require('../game/logpanel.jsx')
@@ -22,9 +25,9 @@ class GameScreen extends React.Component {
       <div id="game-wrapper" style={this.styleWrapper()} className="row medium-uncollapse large-collapse" >
         <h2>{'GAME ' + this.props.match.name}</h2>
 
-        <div className="row">
+        <Row>
           <PlayersPanel players={this.props.match.slots} />
-        </div>
+        </Row>
 
         <div id="stage-wrapper" style={this.styleStageWrapper()}>
           <Stage height={this.props.display.h - 300} >

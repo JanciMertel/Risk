@@ -73,6 +73,7 @@ class App extends React.Component {
   }
 
   changeScreen (newScreen) {
+    console.log('switching screen:' + newScreen)
     this.setState({screen: newScreen})
   }
 
@@ -83,7 +84,7 @@ class App extends React.Component {
       // response.message
       // response.data -> lobby
       //   response.data.map.data -> JSON map
-      if (response.message == Responses['OK']){
+      if (response.status == Responses['OK']){
         that.prepareGame(response.data)
         console.log('game created')
       }
