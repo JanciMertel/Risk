@@ -67,7 +67,7 @@
     "move-to-dist": "parallelshell \"npm run move-maps\" \"npm run move-html\" ",
     "move-maps": "copyfiles -f materials/maps/**/* dist/maps",
     "move-html": "copyfiles -f frontend/src/index.html dist",
-    "client-server": "http-server dist",
+    "client-server": "node backend/server.js",
     "webpack": "webpack --progress --profile --colors --watch",
     "build": "parallelshell \"npm run move-to-dist\" \"npm run webpack\" \"npm run client-server\" \"npm run onchange-html\" "
   }

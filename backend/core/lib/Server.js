@@ -72,7 +72,7 @@ function Server()
     app.use(passport.initialize());
     app.use(passport.session());
     //testing purposes
-    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + '/../../../dist'));
 
     this.httpServer = http.Server(app);
     this.io = socketIo(this.httpServer);
