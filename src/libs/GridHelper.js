@@ -32,14 +32,14 @@ export class GridHelper {
     const tileWidth = tileInnerRadius * 2;
     const tileBottomHeight = (tileHeight - tileSideLength) / 2;
 
-    wantedWidth = wantedWidth - (this.gridPadding * 2);
-    wantedHeight = wantedHeight - (this.gridPadding * 2);
+    wantedWidth = wantedWidth - 2 * this.gridPadding;
+    wantedHeight = wantedHeight - 2 * this.gridPadding;
 
     const allowedCols = Math.floor(wantedWidth / tileWidth); // in even row - always more than odd row
     recommendedWidth = allowedCols * tileWidth;
 
     const allowedRows = Math.floor((wantedHeight - tileBottomHeight) / (tileHeight - tileBottomHeight));
-    recommendedHeight = allowedRows * tileHeight;
+    recommendedHeight = allowedRows * (tileHeight - tileBottomHeight) + tileBottomHeight;
 
     recommendedWidth += 2 * this.gridPadding;
     recommendedHeight += 2 * this.gridPadding;
@@ -91,8 +91,8 @@ export class GridHelper {
           last.x += tileInnerRadius;
         }
         currentRow++;
-        // end conditions
-        if (last.y > (this.gridHeight + 2 * this.gridPadding)) {
+        // end conditions - if next tile's y position would be greater than map threshold
+        if (last.y > (this.gridHeight - this.gridPadding)) {
           console.log('Total tiles:' + currentTileIndex);
           return false;
         }

@@ -21,7 +21,7 @@ export default class World extends WorldObject {
       this.stage.destroy();
     }
 
-    gridHelper.setPadding(0);
+    gridHelper.setPadding(30);
     gridHelper.setTileRadius(50); 
 
     const { width, height } = gridHelper.applyStageRecommendedSize(2000, 1000);
@@ -156,7 +156,7 @@ export default class World extends WorldObject {
       objectRegistry.add(tile, this);
       this.tileLayer.add(tile.representation);
 
-      if(typeof possiblePromise === 'function') {
+      if(possiblePromise && possiblePromise.constructor.name === 'Promise') {
         this.afterCreatePromises.push(possiblePromise);
       }
 
@@ -170,7 +170,7 @@ export default class World extends WorldObject {
     }
 
     // after all tiles are prepared, wait for the 'images' to load and the redraw again
-    Promise.all(this.afterCreatePromises).then(() => this.stage.batchDraw());
+    Promise.all(this.afterCreatePromises).then(() => this.stage.draw());
 
     this.stage.add(this.tileLayer);
   }
