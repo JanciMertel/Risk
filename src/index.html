@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Risk Viewer - frontend experiment</title>
+
+
+    <style>
+        html, body {
+            margin: 0;
+        }
+
+        body {
+            position: fixed;
+        }
+
+        .app {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: transparent;
+            left: 0;
+            text-align: right;
+            color: #0060c7;
+        }
+
+        .header > div {
+            float: right;
+            position: relative;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .header > div.active {
+            border: 1px solid #0060c7;
+        }
+
+        .header > div:first-child {
+            margin-right: 0;
+        }
+
+        .header .vertical-line {
+            width: 0;
+            height: 0;
+            display: inline-block;
+            border-style: solid;
+            border-width: 8px 0px 8px 3px;
+            border-color: #0060c7;
+        }
+
+        .header .triangle {
+            width: 0;
+            height: 0;
+            display: inline-block;
+            border-style: solid;
+            border-width: 8px 0 8px 15px;
+            border-color: transparent transparent transparent #0060c7;
+        }
+
+        #info-box {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            background: #ccccccf5;
+            z-index: 100;
+            width: 500px;
+            height: 200px;
+            border: 5px solid darkgoldenrod;
+            border-width: 5px 0px 0 5px;
+            padding: 10px;
+            border-radius: 10px 0 0 0;
+        }
+
+        #info-box h4 {
+            margin-top: 0;
+        }
+
+        #stats {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+
+        #canvas {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            background: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
