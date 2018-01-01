@@ -1,4 +1,5 @@
-import Tile from '../models/Tile';
+import Tile from '../../models/Tile';
+import objectRegistry from '../../models/ObjectRegistry';
 
 export class GridHelper {
   gridWidth = null;
@@ -22,7 +23,14 @@ export class GridHelper {
     this.gridPadding = padding;
   }
 
+  getRandomTile() {
+    objectRegistry.traverse((item) => {
+      console.log('item', item)
+    })
+  }
+
   applyStageRecommendedSize(wantedWidth, wantedHeight) {
+    window.gridHelper = this;
     let recommendedWidth;
     let recommendedHeight;
 

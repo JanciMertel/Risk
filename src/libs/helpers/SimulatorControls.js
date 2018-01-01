@@ -1,5 +1,5 @@
 import { HtmlHelper } from './HtmlHelper';
-import ticker from './FakeTicker';
+import ticker from '../FakeTicker';
 
 class SimulatorControls extends HtmlHelper {
   createChilds() {
