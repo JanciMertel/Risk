@@ -21,6 +21,34 @@ const viewFunctions = {
     const instance = this.decorate(wantedClass, []);
     return instance.render.call(instance);
   },
+  repeat: function(whichVariableName, whichElementName, htmlContent) {
+    let out = '';
+    for (const element of  this[whichVariableName]) {
+      out += htmlContent.replace(/\{@(((?!\{@).)*)\}/g, (var1, controlContents) => {
+        return this.viewFunction(controlContents, [ whichElementName, element]);
+      });
+    }
+    return out;
+  },
+  replace: function(variablePlaceholder, variableName, variableReplacement, content) {
+    if (!content) {
+      content = variablePlaceholder;
+    }
+    let helper = {};
+    if(variableReplacement && variableName) {
+      eval('helper.' + variableName + '=' + JSON.stringify(variableReplacement));
+    } else {
+      helper = this;
+    }
+    return content.replace(new RegExp('(' + variablePlaceholder + '[\.a-zA-Z0-9]*)', 'g' ), (search, value) => {
+      try {
+        const test = eval('helper.' + value)
+        return test;
+      } catch(e) {
+        return 'undefined';
+      }
+    });
+  }
 };
 
 export default class Builder extends Decorable {
@@ -67,15 +95,19 @@ export default class Builder extends Decorable {
     return document.querySelector('#' + this.id);
   }
 
-  viewFunction() {
-    if(arguments[1]) {
-      let controlContents = arguments[1];
+  viewFunction(controlContents, additionalParameters) {
+    if(controlContents) {
       let functionContents = controlContents.match(/([\w]*)\((.*)\)/);
       if(functionContents.length > 2) { // second is function name, third is args
-        let functionParams = functionContents[2] ? JSON.parse(functionContents[2]) : null;
+        let functionParams = functionContents[2] ? JSON.parse( '[' + functionContents[2] + ']') : null;
+
+        if (additionalParameters) {
+          functionParams = functionParams.concat(additionalParameters);
+        }
+
         let functionName = functionContents[1];
         if(typeof viewFunctions[functionName] === 'function') {
-          return viewFunctions[functionName].call(this, functionParams);
+          return viewFunctions[functionName].apply(this, functionParams);
         } else {
           return '{error}';
         }
