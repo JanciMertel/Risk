@@ -1,5 +1,4 @@
 import Decorable from './Decorable';
-import * as path from 'path';
 
 /**
  * All available functions in templates are defined here
@@ -33,7 +32,7 @@ export default class Builder extends Decorable {
   }
 
   appendHtml(el, str) {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.innerHTML = str;
     while(div.children.length > 0) {
       if(div.children[0].tagName == 'LINK') {
@@ -48,14 +47,17 @@ export default class Builder extends Decorable {
   }
 
   render() {
-    const that = this;
+    if(this.getRootElement()) {
+      this.onRemove();
+    }
     let html = require('../views/' + this.constructor.name.toLowerCase() + '.html');
-    html = html.replace(/(^[\s]*<[a-z]*)/, function(firstElemPart) {
-      return firstElemPart + ' id="' + that.id + '"';
+    html = html.replace(/(^[\s]*<[a-z]*)/, (firstElemPart) => firstElemPart + ' id="' + this.id + '"');
+    let controlContents = html.replace(/\{@(.+)\}/g, (arg1, controlContents) => {
+      return this.viewFunction(controlContents);
     });
-    let controlContents = html.replace(/\{@(.+)\}/g, this.viewFunction.bind(this));
     if(this.renderElement) {
       this.appendHtml(this.renderElement, controlContents);
+      this.onAfterRender();
     } else {
       return controlContents;
     }
@@ -83,5 +85,27 @@ export default class Builder extends Decorable {
 
   setDomElement(element) {
     this.renderElement = document.querySelector(element);
+  }
+
+  onRemove(completely = false) {
+    const rootElement = this.getRootElement();
+    if (rootElement) {
+      if (this.childs && this.childs.length) {
+        this.childs.forEach((child) => {
+          if (child.getRootElement()) {
+            child.onRemove(completely);
+          }
+          delete this.childs[index]; // undefined, array recreated later
+        });
+      }
+      rootElement.parentNode.removeChild(rootElement);
+      if (completely) {
+        this.childs = [];
+      }
+    }
+  }
+
+  onAfterRender() {
+    this.propagate('afterRender');
   }
 }

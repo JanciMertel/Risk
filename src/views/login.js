@@ -1,6 +1,6 @@
-import View from './view';
+import Builder from '../libs/Builder';
 
-export default class Login extends View {
+export default class Login extends Builder {
   static contextIn = ['login'];
 
   login() {

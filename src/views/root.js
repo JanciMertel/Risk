@@ -1,16 +1,18 @@
-import View from './view';
+import Builder from '../libs/Builder';
 
-export default class Root extends View {
+/**
+ * As name implies, this is the root view. It loads another views basically.
+ */
+export default class Root extends Builder {
 
-  static contextIn = ['login'];
-  static contextOut = ['login'];
+  static contextIn = ['login']; // wants access to login method in Router
+  static contextOut = ['login']; // allow childs to access login method from Router
 
   onRouteChange(route) {
-    this.onRemove();
+    this.onRemove(true);
     const view = require('./' + route.view);
-    const childRouteNode = this.decorate(view.default, []);
+    const childRouteNode = this.decorate(view.default, []); // create view and provide context
     this.childs[childRouteNode.constructor.name] = childRouteNode;
-    this.render();
-    this.onAfterRender();
+    this.render(true);
   }
 }
