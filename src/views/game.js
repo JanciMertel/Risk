@@ -1,9 +1,9 @@
-import View from './view';
+import Builder from '../libs/Builder';
 import World from '../models/World';
-import htmlHelper from '../libs/HtmlHelper';
-import infoWindow from '../libs/InfoWindow';
+import htmlHelper from '../libs/helpers/HtmlHelper';
+import infoWindow from '../libs/helpers/InfoWindow';
 
-export default class App extends View {
+export default class Game extends Builder {
   onAfterRender() {
     super.onAfterRender.call(this);
 
@@ -14,9 +14,7 @@ export default class App extends View {
     infoWindow.setRoot(document.getElementById('info-box'));
     infoWindow.createChilds();
 
-    const config = require('./config.js').default;
-
-    const world = new World('World', this, config);
+    const world = new World('World', this);
     world.init(this.elements.canvas);
 
     world.on('info-box', (obj) => {

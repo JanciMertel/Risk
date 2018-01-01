@@ -11,9 +11,9 @@ export default class Router extends Decorable {
 
     this.authState = null;
     this.routes = {
-      '/': {
+      '/game': {
         private: true,
-        view: 'app',
+        view: 'game',
       },
       login: {
         private: false,
@@ -28,16 +28,14 @@ export default class Router extends Decorable {
    * @param password
    */
   login(username, password) {
-    console.log('login', username, password);
     this.authState = {
       username,
     };
 
-    this.setRoute('/');
+    this.setRoute('/game');
   }
 
   setRoute(key) {
-    console.log('Set route', key);
     if(this.currentKey === key) {
       return;
     }

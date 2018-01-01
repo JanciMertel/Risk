@@ -96,8 +96,8 @@ export default class Tile extends WorldObject {
 
     // will generate values <0, max>
     this.resources = {
-      materials: Math.ceil(Math.random() * (maxMaterials + 1)),
-      wealth: Math.ceil(Math.random() * (maxWealth + 1)),
+      materials: Math.floor(Math.random() * (maxMaterials + 1)),
+      wealth: Math.floor(Math.random() * (maxWealth + 1)),
     }
   }
 
