@@ -2,15 +2,30 @@
  * Database module - without prototyping
  */
 
-var Mongoose = require('mongoose');
+import * as Mongoose from 'mongoose';
+import config from '../config';
 
-function Database()
-{
-    this.connection = null;
-    this.connected = false;
+const DB_TYPE_SQLITE = 1;
+const DB_TYPE_MONGO = 2;
 
-    this.connect = function(cb)
-    {
+class Database {
+  config = null;
+  connection = null;
+  connected = false;
+
+  getType() {
+    if (this.config.type === 'sqlite') {
+      return DB_TYPE_SQLITE;
+    } else {
+      return DB_TYPE_MONGO;
+    }
+  }
+
+  constructor(config) {
+      this.config = config;
+  }
+
+  connect(cb) {
         if(!this.connection) {
             Mongoose.connect('mongodb://188.166.44.50/risk');
             this.connection = Mongoose.connection;
@@ -28,5 +43,5 @@ function Database()
     }
 }
 
-var db = new Database()
-module.exports = db;
+const db = new Database(config.database);
+export default db;

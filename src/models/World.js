@@ -2,7 +2,7 @@ import objectRegistry from './ObjectRegistry';
 import simulator from '../libs/FakeTicker';
 import * as Konva from 'konva';
 import Tile, { TILE_TYPES } from './Tile';
-import gridHelper from '../libs/GridHelper';
+import gridHelper from '../libs/helpers/GridHelper';
 import WorldObject from './WorldObject';
 
 export default class World extends WorldObject {
@@ -10,9 +10,14 @@ export default class World extends WorldObject {
   stage = null;
   tileLayer = null;
   afterCreatePromises = []; // store promises for additional render after create
+  lobby = null;
 
   destroy() {
     objectRegistry.reset();
+  }
+
+  constructor(settings) {
+    super(settings);
   }
 
   init(container) {
@@ -25,7 +30,6 @@ export default class World extends WorldObject {
     gridHelper.setTileRadius(50); 
 
     const { width, height } = gridHelper.applyStageRecommendedSize(2000, 1000);
-
     this.stage = new Konva.Stage({
       container,
       width,
@@ -33,7 +37,6 @@ export default class World extends WorldObject {
       draggable: true,
       dragBoundFunc: (pos) => {
         return pos;
-        console.log(pos.x, pos.y);
         let x = pos.x;
         let y = pos.y;
         if (x > 0) {
@@ -82,8 +85,8 @@ export default class World extends WorldObject {
       stroke: 'black',
       strokeWidth: 1
     });
-
     this.stageBorderLayer.add(stageStroke);
+
 
     // add the layer to the stage
     this.stage.add(this.stageBorderLayer);
@@ -119,8 +122,8 @@ export default class World extends WorldObject {
    * Would build tiles, prepare world resources etc, game should be ready after this
    */
   buildWorld() {
+    // create tiles
     this.tileLayer = new Konva.Layer();
-
     const tilePositionIterator = gridHelper.getNextTilePosition();
     let currentPosition = null;
     let tileId = 0;
@@ -168,6 +171,9 @@ export default class World extends WorldObject {
         }
       });
     }
+
+    // create players
+
 
     // after all tiles are prepared, wait for the 'images' to load and the redraw again
     Promise.all(this.afterCreatePromises).then(() => this.stage.draw());

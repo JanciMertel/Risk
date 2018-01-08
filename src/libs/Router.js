@@ -1,4 +1,5 @@
 import Decorable from './Decorable';
+import client from '../libs/Client';
 
 export default class Router extends Decorable {
 
@@ -15,6 +16,10 @@ export default class Router extends Decorable {
         private: true,
         view: 'game',
       },
+      '/lobby': {
+        private: true,
+        view: 'lobby',
+      },
       login: {
         private: false,
         view: 'login',
@@ -28,11 +33,13 @@ export default class Router extends Decorable {
    * @param password
    */
   login(username, password) {
-    this.authState = {
-      username,
-    };
+    client.connect({ username, password }).then(() => {
+      this.authState = {
+        username,
+      };
 
-    this.setRoute('/game');
+      this.setRoute('/lobby');
+    });
   }
 
   setRoute(key) {

@@ -20,4 +20,8 @@ export default class Login extends Builder {
     // dev
     this.login();
   }
+
+  onRemove() {
+    console.log('login on remove');
+  }
 }
