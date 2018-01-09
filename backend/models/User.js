@@ -1,21 +1,29 @@
-var Mongoose = require('mongoose');
+const Sequelize = require('sequelize');
+const DefaultModel = require('./DefaultModel');
 var database = require('../lib/database')
 var bcrypt   = require('bcrypt-nodejs');
 
-var ObjectId = Mongoose.Schema.Types.ObjectId;
+class User extends DefaultModel {
+  static init(sequelize) {
+    return super.init({
+      username: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+    }, { sequelize })
+  };
 
-var UserSchema = new Mongoose.Schema({
-    id : { type : ObjectId },  // room id in io terminology
-    username : { type : String},
-    password : { type : String }
-});
-
-UserSchema.methods.generateHash = function(password) {
+  static generateHash(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
+  }
 
-UserSchema.methods.validPassword = function(password) {
+  validPassword(password) {
     return bcrypt.compareSync(password, this.password);
-};
+  };
+}
 
-module.exports = Mongoose.model('User', UserSchema);
+module.exports = User;

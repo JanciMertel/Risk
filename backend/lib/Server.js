@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')();
 const expressSession = require('express-session');
 const memoryStore = new expressSession.MemoryStore();
 const sharedSession = require("express-socket.io-session");
+const database = require('./Database');
 const SESSION_ID = 'sid';
 const SESSION_SECRET = '12345'; // ultra
 
@@ -16,6 +17,7 @@ class Server {
     this.io = null;
     this.httpServer = null;
     this.app = null;
+    this.database = database;
     this.config = config;
   }
 
@@ -56,8 +58,9 @@ class Server {
     }));
     this.io.origins('*:*');
 
+    // do basic authorization
     this.io.use(function(socket, accept) {
-      // current userId should stored here - if already logged - socket.handshake.session.userId
+      // current userId should be stored here - if already logged - socket.handshake.session.userId
       if (socket.handshake.query.login) {
         const { username, password } = JSON.parse(socket.handshake.query.login);
         if ( true ) { // if credentials are valid, authorize - TODO should fetch user object from db and do auth

@@ -1,4 +1,6 @@
 
 const server = require('./lib/Server');
 
-server.start();
+server.database.connect().then(() => {
+    server.start();
+});

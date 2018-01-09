@@ -1,47 +1,45 @@
 /**
  * Database module - without prototyping
  */
-
-import * as Mongoose from 'mongoose';
-import config from '../config';
-
-const DB_TYPE_SQLITE = 1;
-const DB_TYPE_MONGO = 2;
+const Sequelize = require('sequelize');
+const config = require('../config');
+const path = require('path');
+const fs = require('fs');
 
 class Database {
-  config = null;
-  connection = null;
-  connected = false;
-
-  getType() {
-    if (this.config.type === 'sqlite') {
-      return DB_TYPE_SQLITE;
-    } else {
-      return DB_TYPE_MONGO;
-    }
-  }
-
   constructor(config) {
       this.config = config;
+      this.models = {}; // empty now
+      this.connection = new Sequelize('risk', null, null, {
+          dialect: "sqlite",
+          storage: './sqlite',
+          operatorsAliases: false // sequelize bug - would show notice otherwise
+      });
   }
 
   connect(cb) {
-        if(!this.connection) {
-            Mongoose.connect('mongodb://188.166.44.50/risk');
-            this.connection = Mongoose.connection;
-            Mongoose.connection.once('open', function() {
-                this.connected = true;
-                console.log('Database connected')
-                cb();
-            });
-            Mongoose.connection.on('error', function()
-            {
-                this.connected = false;
-                console.log('Database disconnected')
-            });
-        }
-    }
+    return this.connection.authenticate().then(() => {
+      this.models = Object.assign({}, ...fs.readdirSync(path.join(__dirname, '..', 'models'))
+        .filter(file =>
+          (file.indexOf(".") !== 0) && (file !== "index.js" && file !== 'DefaultModel.js')
+        )
+        .map((file) => {
+          const model = require(path.join(__dirname, '..', 'models', file));
+          // console.log(model.init(sequelize).tableName)
+          return {
+            [model.name]: model.init(this.connection),
+          };
+        })
+      );
+
+      for (const model of Object.keys(this.models)) {
+        typeof this.models[model].associate === 'function' && this.models[model].associate(this.models);
+      }
+
+      return this.connection.sync();
+    });
+  }
 }
 
 const db = new Database(config.database);
-export default db;
+module.exports = db;
