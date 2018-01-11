@@ -34,7 +34,18 @@ class Database {
         typeof this.models[model].associate === 'function' && this.models[model].associate(this.models);
       }
 
-      return this.connection.sync();
+      return this.connection.sync().then(() => {
+        return this.models.User.findAll().then((users) => {
+          if(!users.length) {
+            return this.models.User.create({
+              username: 'test',
+              password: this.models.User.generateHash('test'),
+            });
+          } else {
+            return true;
+          }
+        })
+      });
     });
   }
 }

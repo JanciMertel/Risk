@@ -59,15 +59,20 @@ class Server {
     this.io.origins('*:*');
 
     // do basic authorization
-    this.io.use(function(socket, accept) {
+    this.io.use((socket, accept) => {
       // current userId should be stored here - if already logged - socket.handshake.session.userId
       if (socket.handshake.query.login) {
         const { username, password } = JSON.parse(socket.handshake.query.login);
-        if ( true ) { // if credentials are valid, authorize - TODO should fetch user object from db and do auth
-          socket.handshake.session.userId = 1; // fake
-          socket.handshake.session.save();
-          return accept(null, true);
-        }
+        console.log('Socket io handshake...', username, password)
+        this.database.models.User.auth(username, password).then((userId) => {
+          if (userId) {
+            socket.handshake.session.userId = userId; // fake
+            socket.handshake.session.save();
+            return accept(null, true);
+          } else {
+            return accept(new Error('Cannot authorize'), true);
+          }
+        });
       }
       return accept(new Error('Cannot authorize'), true);
     });
