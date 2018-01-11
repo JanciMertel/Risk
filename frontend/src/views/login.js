@@ -16,9 +16,6 @@ export default class Login extends Builder {
     this.elements.button.onclick = function() {
       that.login();
     };
-
-    // dev
-    this.login();
   }
 
   onRemove() {

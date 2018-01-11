@@ -20,9 +20,7 @@ class Database {
   connect(cb) {
     return this.connection.authenticate().then(() => {
       this.models = Object.assign({}, ...fs.readdirSync(path.join(__dirname, '..', 'models'))
-        .filter(file =>
-          (file.indexOf(".") !== 0) && (file !== "index.js" && file !== 'DefaultModel.js')
-        )
+        .filter(file => file.indexOf(".") !== -1 && ['index.js', 'DefaultModel.js'].indexOf(file) === -1)
         .map((file) => {
           const model = require(path.join(__dirname, '..', 'models', file));
           // console.log(model.init(sequelize).tableName)

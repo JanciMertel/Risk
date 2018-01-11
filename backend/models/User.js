@@ -9,6 +9,7 @@ class User extends DefaultModel {
       username: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -21,9 +22,23 @@ class User extends DefaultModel {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
   }
 
-  validPassword(password) {
-    return bcrypt.compareSync(password, this.password);
+  validPassword(rawPassword) {
+    return bcrypt.compareSync(rawPassword, this.password);
   };
+
+  static auth(username, rawPassword) {
+    return this.findOne({
+      where: {
+        username,
+      }
+    }).then((user) => {
+      if (user && user.validPassword(rawPassword)) {
+        return user.id;
+      } else {
+        return false;
+      }
+    });
+  }
 }
 
 module.exports = User;

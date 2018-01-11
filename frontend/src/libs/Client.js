@@ -3,7 +3,6 @@ class Client {
     return fetch('http://localhost:3000/', {
       credentials: "include"
     }).then((response) => {
-      console.log('connecting? ');
       const socket = io.connect('localhost:3000', {
         query: 'login=' + JSON.stringify(authData)
       });
