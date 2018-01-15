@@ -1,6 +1,9 @@
 <div class="lobby">
-    <div id="teaser-canvas"></div>
-    <ul class="rooms">
-        {@repeat("rooms", "room", "<li>{@replace(\"room.name\")} <button data-room-id=\"{@replace(\"room.name\")}\">connect</button></li>")}
-    </ul>
+    <div id="teaser"></div>
+    <div class="rooms-wrapper">
+        <h5>Rooms:</h5>
+        <ul class="rooms">
+            {@repeat("rooms", "room", "<li>{@replace(\"room.name\")} <button data-room-id=\"{@replace(\"room.name\")}\">connect</button></li>")}
+        </ul>
+    </div>
 </div>

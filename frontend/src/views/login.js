@@ -1,4 +1,5 @@
 import Builder from '../libs/Builder';
+import styles from './login.scss';
 
 export default class Login extends Builder {
   static contextIn = ['login'];

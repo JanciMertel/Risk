@@ -2,6 +2,7 @@ import Builder from '../libs/Builder';
 import World from '../models/World';
 import htmlHelper from '../libs/helpers/HtmlHelper';
 import infoWindow from '../libs/helpers/InfoWindow';
+import styles from './lobby.scss';
 
 export default class Lobby extends Builder {
   rooms = [{name: 'prva'}, {name: 'druha'}];
@@ -20,7 +21,8 @@ export default class Lobby extends Builder {
       this.parent.render();
     };
 
-    window.test =this;
+    this.elements.teaser = this.getRootElement().querySelector('#teaser');
+
   }
 
   onRemove() {

@@ -1,5 +1,5 @@
 import Builder from '../libs/Builder';
-
+import styles from './root.scss';
 /**
  * As name implies, this is the root view. It loads another views basically.
  */

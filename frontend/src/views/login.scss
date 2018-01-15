@@ -1,0 +1,18 @@
+.login {
+  #login-form {
+    margin: auto;
+    padding: 30px;
+    border:1px solid firebrick;
+    .input-wrapper {
+      margin-bottom: 10px;
+      label {
+        display: block;
+        text-align: left;
+        text-transform: uppercase;
+      }
+    }
+    .submit-wrapper {
+      text-align: left;
+    }
+  }
+}

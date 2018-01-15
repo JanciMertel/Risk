@@ -1,0 +1,32 @@
+@keyframes animatedBackground {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 700px; }
+}
+
+.lobby {
+  #teaser {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background:transparent url('../assets/wallpaper.jpg') repeat;
+    background-position: 0px 0px;
+    animation: animatedBackground 40s linear infinite alternate forwards;
+  }
+  .rooms-wrapper {
+    max-width: 80%;
+    width: 800px;
+    padding: 30px;
+    background: white;
+    position: relative;
+    z-index:2;
+    margin: auto;
+    .rooms {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    h5 {
+      margin-top: 0;
+    }
+  }
+}
