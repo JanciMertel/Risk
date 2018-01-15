@@ -3,6 +3,7 @@ import World from '../models/World';
 import htmlHelper from '../libs/helpers/HtmlHelper';
 import infoWindow from '../libs/helpers/InfoWindow';
 import styles from './lobby.scss';
+import client from '../libs/Client';
 
 export default class Lobby extends Builder {
   rooms = [{name: 'prva'}, {name: 'druha'}];
@@ -23,6 +24,18 @@ export default class Lobby extends Builder {
 
     this.elements.teaser = this.getRootElement().querySelector('#teaser');
 
+    client.on('Lobby::ping', (data) => {
+      console.log('ping', data);
+    })
+    client.emit('Lobby::findAllMatches', {}, (data) => {
+      console.log('lobbies', data);
+    });
+    client.emit('Lobby::getPlayersInRoom', {}, (data) => {
+      console.log('getPlayersInRoom', data);
+    });
+    client.on('Lobby::playerJoined', (data) => {
+      console.log('playerJoined', data);
+    })
   }
 
   onRemove() {

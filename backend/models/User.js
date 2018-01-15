@@ -13,7 +13,7 @@ class User extends DefaultModel {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false,      
       },
     }, { sequelize })
   };
@@ -33,7 +33,7 @@ class User extends DefaultModel {
       }
     }).then((user) => {
       if (user && user.validPassword(rawPassword)) {
-        return user.id;
+        return user;
       } else {
         return false;
       }

@@ -1,4 +1,3 @@
-const Socket = require('./Socket');
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -9,7 +8,7 @@ const sharedSession = require("express-socket.io-session");
 const database = require('./Database');
 const SESSION_ID = 'sid';
 const SESSION_SECRET = '12345'; // ultra
-
+let Socket;
 const config = require('../config');
 
 class Server {
@@ -64,9 +63,12 @@ class Server {
       if (socket.handshake.query.login) {
         const { username, password } = JSON.parse(socket.handshake.query.login);
         console.log('Socket io handshake...', username, password)
-        this.database.models.User.auth(username, password).then((userId) => {
-          if (userId) {
-            socket.handshake.session.userId = userId; // fake
+        this.database.models.User.auth(username, password).then((user) => {
+          if (user) {
+            socket.handshake.session.user = {
+              id: user.id,
+              username: user.username,
+            };
             socket.handshake.session.save();
             return accept(null, true);
           } else {
@@ -78,11 +80,14 @@ class Server {
     });
 
     this.io.on('connection', (socket) => {
-        console.log('New socket.io connection');
+        console.log('New socket.io connection', socket.handshake.session.user.id);
         socket.socket = new Socket(socket);
     });
 
     this.httpServer.listen(this.config.port);
+    setInterval(() => {
+      this.broadcastRoom('lobby', 'Lobby::ping', 'test');
+    }, 1000);
   }
 
   /**
@@ -95,7 +100,23 @@ class Server {
   broadcastRoom(roomId, eventName, eventData) {
     this.io.to(roomId).emit(eventName, eventData);
   }
+
+  getPlayersInRoom(room) {
+    const clients = this.io.sockets.adapter.rooms[room].sockets;
+    const numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
+    const socketIds = [];
+    for (var clientId in clients ) {
+
+         //this is the socket of each client in the room.
+         var clientSocket = this.io.sockets.connected[clientId];
+         socketIds.push(clientSocket.socket.getCurrentUser());
+
+    }
+    console.log('players  in room', socketIds);
+    return socketIds;
+  }
 }
 
 const server = new Server(config.server);
 module.exports = server;
+Socket = require('./Socket');
