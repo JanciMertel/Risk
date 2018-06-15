@@ -38,7 +38,7 @@ export default class Router extends Decorable {
         username,
       };
 
-      this.setRoute('/lobby');
+      this.setRoute('/game');
     });
   }
 

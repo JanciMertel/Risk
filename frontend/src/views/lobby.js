@@ -26,7 +26,7 @@ export default class Lobby extends Builder {
 
     client.on('Lobby::ping', (data) => {
       console.log('ping', data);
-    })
+    });
     client.emit('Lobby::findAllMatches', {}, (data) => {
       console.log('lobbies', data);
     });
